@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import axios from 'axios'; // Import Axios for making HTTP requests
 
 const data = [
     { label: 'כתף', value: '1' },
@@ -21,6 +22,32 @@ const Screen2 = () => {
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [exerciseData, setExerciseData] = useState({
+        name: '',
+        category: '',
+        description: '',
+        file: '', 
+        approval: '', 
+        user: '', 
+    });
+
+    const handleSubmit = async () => {
+        try {
+            // const response = await axios.post('http://your-django-backend-url/create-exercise/', exerciseData);
+            const response = await axios.post('http://localhost:8000/create-exercise/', exerciseData);
+            console.log(response.data); // Handle successful response
+            // Optionally, reset form fields or show a success message
+        } catch (error) {
+            console.error('Error:', error); // Handle error
+        }
+    };
+
+    const handleChange = (field, value) => {
+        setExerciseData({
+            ...exerciseData,
+            [field]: value,
+        });
+    };
 
     return (
         <SafeAreaView>       
