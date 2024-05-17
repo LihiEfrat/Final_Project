@@ -13,3 +13,6 @@ class Exercise(models.Model):
     # a foreign key relationship with the User model to store the user ID
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
+    class Meta:
+        app_label = 'myapp'  
+    
