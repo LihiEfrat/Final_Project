@@ -69,6 +69,42 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="addExercise"
+        options={{
+          title: 'add exercise page',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="exerciseManager"
+        options={{
+          title: 'exercise manager',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="buildExercise"
+        options={{
+          title: 'build exercise',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Summary"
+        options={{
+          title: 'build exercise',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          ),
+        }}
+      />
 
     </Tabs>    
     
