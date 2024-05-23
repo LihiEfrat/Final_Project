@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, FlatList, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AppHeader from './components/AppHeader';
-
+// 
 // Exercise data
 const exerciseData = [
     { id: '1', title: 'Exercise 1', /* Other exercise data */ },
