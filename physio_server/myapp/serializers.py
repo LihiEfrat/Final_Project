@@ -1,16 +1,18 @@
 from rest_framework import serializers
+from django.contrib.auth.hashers import make_password
 from .models import Therapist, Patient, ProfessionalDetails, Preferences
 
 class TherapistRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Therapist
         fields = ['first_name', 'last_name', 'id', 'license_id', 'email', 'phone_number', 'password', 'is_professional']
+        extra_kwargs = {'password': {'write_only': True}}  # Hide password field from response
 
     def create(self, validated_data):
+        # Hash the password before saving
+        validated_data['password'] = make_password(validated_data['password'])
+
         therapist = Therapist.objects.create(**validated_data)
-        print(therapist)
-        # therapist.set_password(validated_data['password'])
-        therapist.save()
         return therapist
 
 class PreferencesSerializer(serializers.ModelSerializer):
@@ -29,6 +31,7 @@ class PatientSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data['password'])
         preferences_data = validated_data.pop('preferences')
         preferences = Preferences.objects.create(**preferences_data)
         patient = Patient.objects.create(preferences=preferences, **validated_data)

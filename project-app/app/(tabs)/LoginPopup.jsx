@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import axios from 'axios'; // Import Axios for making HTTP requests
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
@@ -7,9 +9,33 @@ const LoginPopup = ({ onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigation = useNavigation();
+
   const handleLogin = () => {
-    // Handle the login logic here
-    onClose(); // Close the popup after login
+    // Make a POST request to your login API endpoint
+    axios.post('http://10.100.102.5:8000/api/login/', {
+      email: username,
+      password: password
+    })
+    .then(response => {
+      // Handle the successful login response
+      const isTherapist = response.data.is_therapist;
+      if (isTherapist) {
+        // Navigate to therapist screen
+        console.log('Logged in as a therapist');
+        navigation.navigate('buttonsPageTherapist');
+      } else {
+        // Navigate to patient screen
+        console.log('Logged in as a patient');
+        navigation.navigate('buttonsPagePatient');
+      }
+      onClose(); // Close the popup after login
+    })
+    .catch(error => {
+      // Handle the error response
+      console.error('Login error:', error);
+      // Handle error, such as displaying an error message to the user
+    });
   };
 
   return (
