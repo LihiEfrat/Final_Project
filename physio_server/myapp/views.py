@@ -8,6 +8,15 @@ from .serializers import TherapistRegistrationSerializer,TherapistSerializer, Pa
 class TherapistRegistrationView(APIView):
     def post(self, request):
         serializer = TherapistRegistrationSerializer(data=request.data)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PatientRegistrationView(APIView):
+    def post(self, request):
+        serializer = PatientSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

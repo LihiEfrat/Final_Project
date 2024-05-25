@@ -4,13 +4,35 @@ from .models import Therapist, Patient, ProfessionalDetails, Preferences
 class TherapistRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Therapist
-        fields = ['first_name', 'last_name', 'license_id', 'email', 'phone_number', 'password', 'is_professional']
+        fields = ['first_name', 'last_name', 'id', 'license_id', 'email', 'phone_number', 'password', 'is_professional']
 
     def create(self, validated_data):
         therapist = Therapist.objects.create(**validated_data)
-        therapist.set_password(validated_data['password'])
+        print(therapist)
+        # therapist.set_password(validated_data['password'])
         therapist.save()
         return therapist
+
+class PreferencesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Preferences
+        fields = ['interested_in_notifications', 'interested_in_calendar_sync']
+
+class PatientSerializer(serializers.ModelSerializer):
+    preferences = PreferencesSerializer()
+
+    class Meta:
+        model = Patient
+        fields = [
+            'first_name', 'last_name', 'id', 'email', 'phone_number', 'password',
+            'id_photo', 'injury', 'pain_scale', 'height', 'weight', 'preferences'
+        ]
+
+    def create(self, validated_data):
+        preferences_data = validated_data.pop('preferences')
+        preferences = Preferences.objects.create(**preferences_data)
+        patient = Patient.objects.create(preferences=preferences, **validated_data)
+        return patient
         
 
 class TherapistSerializer(serializers.ModelSerializer):
