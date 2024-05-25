@@ -147,3 +147,5 @@ web-build/
 
 **/ios/.xcode.env.local
 
+venv/
+
