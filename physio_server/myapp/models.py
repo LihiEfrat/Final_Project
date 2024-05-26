@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # how the tables should look like
 # After adding new models (tables) run both commands in terminal to apply to DB:
@@ -33,3 +34,14 @@ class Preferences(models.Model):
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE, related_name='preferences')
     interested_in_notifications = models.BooleanField(default=True)
     interested_in_calendar_sync = models.BooleanField(default=True)
+    
+class Exercise(models.Model):
+    Eid = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
+    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=100)
+    description = models.TextField()
+    videoUrl = models.CharField(max_length=100)
+    approval = models.BooleanField(default=False)
+    imgUrl = models.ImageField(upload_to='exercise_images/', null=True, blank=True)
+    # a foreign key relationship with the User model to store the user ID
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

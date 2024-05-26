@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Therapist, Patient, ProfessionalDetails, Preferences
-from .serializers import TherapistRegistrationSerializer,TherapistSerializer, PatientSerializer, ProfessionalDetailsSerializer, PreferencesSerializer
+from .models import Therapist, Patient, ProfessionalDetails, Preferences, Exercise
+from .serializers import TherapistRegistrationSerializer,TherapistSerializer, PatientSerializer, ProfessionalDetailsSerializer, PreferencesSerializer, ExerciseSerializer
 from django.contrib.auth.hashers import check_password
 
 class CustomLoginView(APIView):
@@ -67,3 +67,9 @@ class ProfessionalDetailsViewSet(viewsets.ModelViewSet):
 class PreferencesViewSet(viewsets.ModelViewSet):
     queryset = Preferences.objects.all()
     serializer_class = PreferencesSerializer
+    
+class ExerciseViewSet(viewsets.ModelViewSet): 
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
+    
+    

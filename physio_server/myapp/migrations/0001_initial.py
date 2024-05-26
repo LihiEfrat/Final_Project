@@ -63,4 +63,18 @@ class Migration(migrations.Migration):
                 ('therapist', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='professional_details', to='myapp.therapist')),
             ],
         ),
+        
+        migrations.CreateModel(
+            name='Exercise',
+            fields=[
+                ('Eid', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=100)),
+                ('category', models.CharField(max_length=100)),
+                ('description', models.TextField()),
+                ('videoUrl', models.CharField(max_length=100)),
+                ('approval', models.BooleanField(default=False)),
+                ('imgUrl', models.ImageField(upload_to='exercise_images/', null=True, blank=True))
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
     ]

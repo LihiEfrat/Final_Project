@@ -56,7 +56,7 @@ const addExercise = () => {
                 <TextInput
                     placeholder='שם התרגיל'
                     value={exerciseData.name}
-                    onChangeText={(text) => handleChange('name', text)}
+                    onChangeText={(text: any) => handleChange('name', text)}
                     style={[styles.input, { height: 40 }]}
                 />
 
@@ -64,7 +64,6 @@ const addExercise = () => {
                     style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
                     placeholderStyle={styles.placeholderStyle}
                     selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
                     inputSearchStyle={[styles.inputSearchStyle, { textAlign: 'right' }]}
                     data={data}
                     search
@@ -76,7 +75,7 @@ const addExercise = () => {
                     value={value}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
-                    onChange={(item: { value: any; }) => {
+                    onChange={(item: {label(arg0: string, label: any): unknown; value: any;}) => {
                         setValue(item.value);
                         handleChange('category', item.label); // Update category in exerciseData
                         setIsFocus(false);
@@ -86,7 +85,7 @@ const addExercise = () => {
                 <TextInput
                     placeholder='פירוט התרגיל'
                     value={exerciseData.explanation}
-                    onChangeText={(text) => handleChange('explanation', text)}
+                    onChangeText={(text: any) => handleChange('explanation', text)}
                     multiline={true}
                     style={[styles.input, { height: 100, paddingTop: 10 }]}
                 />
