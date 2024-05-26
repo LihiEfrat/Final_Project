@@ -22,6 +22,8 @@ export default function RegisterToAppPatient() {
 
     const navigation = useNavigation();
 
+    const URL = process.env.EXPO_PUBLIC_API_URL;
+
     const handleRegisterPress = () => {
         const formData = new FormData();
         formData.append('first_name', firstName);
@@ -44,7 +46,7 @@ export default function RegisterToAppPatient() {
         formData.append('interested_in_notifications', interestedInNotifications);
         formData.append('interested_in_calendar_sync', interestedInCalendarSync);
 
-        axios.post('http://10.100.102.5:8000/api/register/patient/', formData, {
+        axios.post(`http://${URL}:8000/api/register/patient/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
