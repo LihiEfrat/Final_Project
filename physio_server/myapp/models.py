@@ -1,5 +1,10 @@
 from django.db import models
 
+# how the tables should look like
+# After adding new models (tables) run both commands in terminal to apply to DB:
+#   python3 manage.py makemigrations
+#   python3 manage.py migrate
+
 class User(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -23,7 +28,6 @@ class Patient(User):
 
 class ProfessionalDetails(models.Model):
     therapist = models.OneToOneField(Therapist, on_delete=models.CASCADE, related_name='professional_details')
-    # Add any additional fields for professional details
 
 class Preferences(models.Model):
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE, related_name='preferences')

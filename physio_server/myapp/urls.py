@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import TherapistRegistrationView, PatientRegistrationView, CustomLoginView, TherapistViewSet, PatientViewSet, ProfessionalDetailsViewSet, PreferencesViewSet
-
+# urls to django APIs
 router = DefaultRouter()
 router.register(r'therapists', TherapistViewSet)
 router.register(r'patients', PatientViewSet)
