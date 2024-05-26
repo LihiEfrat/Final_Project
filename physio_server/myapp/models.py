@@ -41,8 +41,8 @@ class Exercise(models.Model):
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=100)
     description = models.TextField()
-    videoUrl = models.CharField(max_length=100)
+    # videoUrl = models.CharField(max_length=100, null=True)
     approval = models.BooleanField(default=False)
-    imgUrl = models.FileField(upload_to='exercise_images/')
+    # imgUrl = models.FileField(upload_to='exercise_images/')
     # a foreign key relationship with the User model to store the user ID
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
