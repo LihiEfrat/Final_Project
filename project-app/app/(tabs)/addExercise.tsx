@@ -34,7 +34,7 @@ const addExercise = () => {
     const handleSubmit = async () => {
         try {
             // const response = await axios.post('http://your-django-backend-url/create-exercise/', exerciseData);
-            const response = await axios.post('http://localhost:8000/create-exercise/', exerciseData);
+            const response = await axios.post('http://10.0.0.14:8000/create-exercise/', exerciseData);
             console.log(response.data); // Handle successful response
             // Optionally, reset form fields or show a success message
         } catch (error) {
@@ -42,7 +42,7 @@ const addExercise = () => {
         }
     };
 
-    const handleChange = (field, value) => {
+    const handleChange = (field: any, value: any) => {
         setExerciseData({
             ...exerciseData,
             [field]: value,
@@ -54,8 +54,9 @@ const addExercise = () => {
             <View style={styles.mainContainer}>
                 <Text style={styles.titleText}> הוספת תרגיל למאגר</Text>
                 <TextInput
-                    defaultValue='שם התרגיל'
-                    onChangeText={txt => setText(txt)}
+                    placeholder='שם התרגיל'
+                    value={exerciseData.name}
+                    onChangeText={(text) => handleChange('name', text)}
                     style={[styles.input, { height: 40 }]}
                 />
 
@@ -75,15 +76,17 @@ const addExercise = () => {
                     value={value}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
-                    onChange={item => {
+                    onChange={(item: { value: any; }) => {
                         setValue(item.value);
+                        handleChange('category', item.label); // Update category in exerciseData
                         setIsFocus(false);
                     }}
                 />
 
                 <TextInput
-                    defaultValue='פירוט התרגיל'
-                    onChangeText={txt => setText(txt)}
+                    placeholder='פירוט התרגיל'
+                    value={exerciseData.explanation}
+                    onChangeText={(text) => handleChange('explanation', text)}
                     multiline={true}
                     style={[styles.input, { height: 100, paddingTop: 10 }]}
                 />
@@ -108,7 +111,7 @@ const addExercise = () => {
                     <Text style={{ color: 'black', fontSize: 16 }}>אישור הורדת התרגיל ותכניו במצב לא מקוון</Text>
                 </View>
 
-                <TouchableOpacity style={styles.saveButton} onPress={() => console.log('button pressed for saving changes')}>
+                <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
                     <Text style={{ color: 'white'}}> שמור שינויים </Text>
                 </TouchableOpacity>
 
