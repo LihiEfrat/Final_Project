@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 # how the tables should look like
 # After adding new models (tables) run both commands in terminal to apply to DB:
@@ -21,7 +22,7 @@ class Therapist(User):
     is_professional = models.BooleanField(default=False)
 
 class Patient(User):
-    id_photo = models.ImageField(upload_to='id_photos/')
+    # id_photo = models.ImageField(upload_to='id_photos/')
     injury = models.TextField()
     pain_scale = models.IntegerField()
     height = models.FloatField()
@@ -42,6 +43,6 @@ class Exercise(models.Model):
     description = models.TextField()
     videoUrl = models.CharField(max_length=100)
     approval = models.BooleanField(default=False)
-    imgUrl = models.ImageField(upload_to='exercise_images/', null=True, blank=True)
+    imgUrl = models.FileField(upload_to='exercise_images/')
     # a foreign key relationship with the User model to store the user ID
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

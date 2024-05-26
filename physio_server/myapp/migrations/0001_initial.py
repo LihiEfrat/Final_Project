@@ -2,7 +2,7 @@
 
 import django.db.models.deletion
 from django.db import migrations, models
-
+from django.conf import settings
 
 class Migration(migrations.Migration):
 
@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField()),
                 ('videoUrl', models.CharField(max_length=100)),
                 ('approval', models.BooleanField(default=False)),
-                ('imgUrl', models.ImageField(upload_to='exercise_images/', null=True, blank=True))
+                ('imgUrl', models.FileField(upload_to='exercise_images/')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
