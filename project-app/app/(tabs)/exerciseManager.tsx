@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, FlatList, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AppHeader from './components/AppHeader';
-
+// 
 // Exercise data
 const exerciseData = [
     { id: '1', title: 'Exercise 1', /* Other exercise data */ },
@@ -30,11 +30,9 @@ const exerciseManager = () => {
     const navigation = useNavigation();
 
     return (
-        <SafeAreaView style={{flex: 1, direction: 'rtl'}}>
+        <SafeAreaView style={{flex: 1, direction: 'rtl', backgroundColor:'white'}}>
             <AppHeader/>
-            {/* <View style={{padding: 10}}>
-                <Text style={{textAlign: 'right'}}>דף ראשי - מאגר תרגילים</Text>
-            </View> */}
+         
 
             <View style={styles.titleContainer}>
                 <Text style={styles.titleText}>מאגר תרגילים</Text>
@@ -136,7 +134,7 @@ exerciseImage: {
     height: 100,
     marginBottom: 5,
     borderRadius: 8,
-    backgroundColor: '#d3d3d3', // Placeholder color if the image doesn't load
+    // backgroundColor: '#d3d3d3', // Placeholder color if the image doesn't load
 },
 });
 
