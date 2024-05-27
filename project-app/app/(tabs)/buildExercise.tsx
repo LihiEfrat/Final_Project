@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Summary from './Summary';
 import { useNavigation } from '@react-navigation/native';
 import AppHeader from './components/AppHeader';
+import axios from 'axios';
 
 
 
@@ -19,6 +20,22 @@ const BuildEx = () => {
   const [programName, setProgramName] = useState('');
   const [exerciseData, setExerciseData] = useState([]);
 
+  const handleTrainingSave =()=>{
+    const trainingData={
+      name:programName,
+
+    };
+    console.log(trainingData);        
+
+        axios.post('http://10.100.102.16:8000/api/save/', trainingData)
+            .then(response => {
+                console.log(response.data);
+                navigation.navigate('Summary');
+            })
+            .catch(error => {
+                console.error(error);
+            });
+  }
   const navigation = useNavigation();
 
   const handleSave = () => {
@@ -38,8 +55,9 @@ const BuildEx = () => {
       <AppHeader/>
       <Header />
       <Name programName={programName} setProgramName={setProgramName} />
+      
       <ExList setExerciseData={setExerciseData} />
-      <TouchableOpacity style={styles.button} onPress={handleSave}>
+      <TouchableOpacity style={styles.button} onPress={handleTrainingSave}>
         <Text style={styles.buttonText}>שמור</Text>
       </TouchableOpacity>
     </View>

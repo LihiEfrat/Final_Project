@@ -34,7 +34,7 @@ const addExercise = () => {
     const handleSubmit = async () => {
         try {
             // const response = await axios.post('http://your-django-backend-url/create-exercise/', exerciseData);
-            const response = await axios.post('http://localhost:8000/create-exercise/', exerciseData);
+            const response = await axios.post('http://10.100.102.16:8000/create-exercise/', exerciseData);
             console.log(response.data); // Handle successful response
             // Optionally, reset form fields or show a success message
         } catch (error) {

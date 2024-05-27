@@ -13,7 +13,7 @@ const LoginPopup = ({ onClose }) => {
 
   const handleLogin = () => {
     // Make a POST request to your login API endpoint
-    axios.post('http://10.100.102.5:8000/api/login/', {
+    axios.post('http://10.100.102.16:8000/api/login/', {
       email: username,
       password: password
     })

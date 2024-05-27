@@ -33,3 +33,7 @@ class Preferences(models.Model):
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE, related_name='preferences')
     interested_in_notifications = models.BooleanField(default=True)
     interested_in_calendar_sync = models.BooleanField(default=True)
+
+class Training(models.Model):
+    training_name=models.CharField(max_length=250)
+    
