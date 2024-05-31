@@ -36,7 +36,7 @@ class Preferences(models.Model):
 
 class Training(models.Model):
     training_name = models.CharField(max_length=100)
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,default='NULL')
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.training_name
