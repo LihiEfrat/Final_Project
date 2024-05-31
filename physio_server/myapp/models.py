@@ -10,6 +10,7 @@ from django.conf import settings
 class User(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    user_id = models.CharField(max_length=10, unique=True)
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=15)
     password = models.CharField(max_length=128)  # Consider using Django's built-in authentication system
