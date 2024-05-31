@@ -6,7 +6,7 @@ from .models import Therapist, Patient, ProfessionalDetails, Preferences, Exerci
 class TherapistRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Therapist
-        fields = ['first_name', 'last_name', 'id', 'license_id', 'email', 'phone_number', 'password', 'is_professional']
+        fields = ['first_name', 'last_name', 'user_id', 'license_id', 'email', 'phone_number', 'password', 'is_professional']
         extra_kwargs = {'password': {'write_only': True}}  # Hide password field from response
 
     def create(self, validated_data):

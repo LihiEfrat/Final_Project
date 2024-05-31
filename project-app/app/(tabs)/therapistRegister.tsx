@@ -23,7 +23,7 @@ export default function RegisterToAppTherapist() {
         const therapistData = {
             first_name: firstName,
             last_name: lastName,
-            id: id,
+            user_id: id,
             license_id: licenseId,
             email: email,
             phone_number: phoneNumber,
