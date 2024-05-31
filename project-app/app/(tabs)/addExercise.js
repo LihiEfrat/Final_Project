@@ -31,10 +31,11 @@ const addExercise = () => {
         // user: '', 
     });
 
+    const URL = process.env.EXPO_PUBLIC_API_URL;
+
     const handleSubmit = async () => {
         try {
-            // const response = await axios.post('http://your-django-backend-url/create-exercise/', exerciseData);
-            const response = await axios.post('http://10.0.0.14:8000/api/create-exercise/', exerciseData);
+            const response = await axios.post(`http://${URL}:8000/api/create-exercise/`, exerciseData);
             console.log(response.data); // Handle successful response
             // Optionally, reset form fields or show a success message
         } catch (error) {
@@ -42,7 +43,7 @@ const addExercise = () => {
         }
     };
 
-    const handleChange = (field: any, value: any) => {
+    const handleChange = (field, value) => {
         setExerciseData({
             ...exerciseData,
             [field]: value,
@@ -56,7 +57,7 @@ const addExercise = () => {
                 <TextInput
                     placeholder='שם התרגיל'
                     value={exerciseData.name}
-                    onChangeText={(text: any) => handleChange('name', text)}
+                    onChangeText={(text) => handleChange('name', text)}
                     style={[styles.input, { height: 40 }]}
                 />
 
@@ -75,7 +76,7 @@ const addExercise = () => {
                     value={value}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
-                    onChange={(item: {label(arg0: string, label: any): unknown; value: any;}) => {
+                    onChange={(item) => {
                         setValue(item.value);
                         handleChange('category', item.label); // Update category in exerciseData
                         setIsFocus(false);
@@ -85,7 +86,7 @@ const addExercise = () => {
                 <TextInput
                     placeholder='פירוט התרגיל'
                     value={exerciseData.description}
-                    onChangeText={(text: any) => handleChange('description', text)}
+                    onChangeText={(text) => handleChange('description', text)}
                     multiline={true}
                     style={[styles.input, { height: 100, paddingTop: 10 }]}
                 />
