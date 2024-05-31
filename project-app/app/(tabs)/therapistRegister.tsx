@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Scroll
 import Checkbox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import { Alert } from 'react-native';
 
 export default function RegisterToAppTherapist() {
     const [firstName, setFirstName] = useState('');
@@ -16,11 +17,14 @@ export default function RegisterToAppTherapist() {
 
     const navigation = useNavigation();
 
+    const URL = process.env.EXPO_PUBLIC_API_URL;
+    
+
     const handleRegisterPress = () => {
         const therapistData = {
             first_name: firstName,
             last_name: lastName,
-            id: id,
+            user_id: id,
             license_id: licenseId,
             email: email,
             phone_number: phoneNumber,
@@ -28,15 +32,31 @@ export default function RegisterToAppTherapist() {
             is_professional: isChecked,
         };
 
-        console.log(therapistData);        
+        // console.log(therapistData);        
 
-        axios.post('http://10.100.102.16:8000/api/register/therapist/', therapistData)
+
+        axios.post(`http://${URL}:8000/api/register/therapist/`, therapistData)
             .then(response => {
                 console.log(response.data);
                 navigation.navigate('buttonsPageTherapist');
             })
             .catch(error => {
-                console.error(error);
+    
+                // Extract and display error messages from the response
+                if (error.response) {
+                    const { data } = error.response;
+                    if (data.errors) {
+                        // Display all errors returned from the backend
+                        const errorMessages = Object.values(data.errors).flat().join('\n');
+                        Alert.alert('Registration Error', errorMessages);
+                    } else {
+                        Alert.alert('Registration Error', 'An unknown error occurred. Please try again.');
+                    }
+                } else if (error.request) {
+                    Alert.alert('Registration Error', 'No response received. Please check your network connection.');
+                } else {
+                    Alert.alert('Registration Error', `Error: ${error.message}`);
+                }
             });
     };
 

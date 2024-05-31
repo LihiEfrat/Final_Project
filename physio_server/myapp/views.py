@@ -1,10 +1,19 @@
 from django.shortcuts import render
+import json
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Therapist, Patient, ProfessionalDetails, Preferences,Training,Exercise
-from .serializers import TherapistRegistrationSerializer,TherapistSerializer, PatientSerializer, ProfessionalDetailsSerializer, PreferencesSerializer,TrainingSerializer, ExerciseSerializer
+
+from .models import Therapist, Patient, ProfessionalDetails, Preferences, Exercise,Training,ExercisePlan
+from .serializers import TherapistRegistrationSerializer,TherapistSerializer, PatientRegisterSerializer, PatientSerializer, ProfessionalDetailsSerializer, PreferencesSerializer, ExerciseSerializer,TrainingSerializer, ExercisePlanSerializer
+
 from django.contrib.auth.hashers import check_password
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import ExerciseSerializer
+from rest_framework.exceptions import ValidationError
+
 
 class CustomLoginView(APIView):
     def match_passwords(self, input_password, obj):
@@ -39,17 +48,33 @@ class TherapistRegistrationView(APIView):
     def post(self, request):
         serializer = TherapistRegistrationSerializer(data=request.data)
         print(serializer)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ValidationError as e:
+            return Response({'errors': e.detail}, status=status.HTTP_400_BAD_REQUEST)
 
 class PatientRegistrationView(APIView):
     def post(self, request):
-        serializer = PatientSerializer(data=request.data)
+
+        # Convert request data to dict if it is not already
+        data = request.data.dict() if isinstance(request.data, dict) else request.data
+        
+        # Parse the preferences JSON string to a dictionary
+        if 'preferences' in data:
+            try:
+                data['preferences'] = json.loads(data['preferences'])
+            except json.JSONDecodeError:
+                return Response({'error': 'Invalid JSON for preferences field'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = PatientRegisterSerializer(data=data)
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -78,7 +103,7 @@ class TrainingView(APIView):
             return Response(TrainingSerializer(training).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ExerciseView(APIView):
+class ExercisePlanView(APIView):
     def post(self, request):
         serializer = ExerciseSerializer(data=request.data)
         if serializer.is_valid():
@@ -90,6 +115,22 @@ class TrainingViewSet(viewsets.ModelViewSet):
     queryset = Training.objects.all()
     serializer_class = TrainingSerializer
 
-class ExerciseViewSet(viewsets.ModelViewSet):
+class ExercisePlanViewSet(viewsets.ModelViewSet):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
+
+class ExerciseViewSet(viewsets.ModelViewSet): 
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
+    
+
+
+@api_view(['POST'])
+def create_exercise(request):
+    if request.method == 'POST':
+        serializer = ExerciseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

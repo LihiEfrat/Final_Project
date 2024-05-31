@@ -11,9 +11,11 @@ const LoginPopup = ({ onClose }) => {
 
   const navigation = useNavigation();
 
+  const URL = process.env.EXPO_PUBLIC_API_URL;
+
   const handleLogin = () => {
     // Make a POST request to your login API endpoint
-    axios.post('http://10.100.102.16:8000/api/login/', {
+    axios.post(`http://${URL}:8000/api/login/`, {
       email: username,
       password: password
     })
