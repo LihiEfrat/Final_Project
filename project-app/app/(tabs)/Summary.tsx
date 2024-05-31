@@ -5,22 +5,25 @@ import AppHeader from './components/AppHeader';
 
 const Summary = () => {
   // const { programName, exerciseData } = route.params;
+  
 
   const route = useRoute();
-  const { programName, exerciseData } = route.params || {};
+  // const { programName, exerciseData } = route.params || {};
+    const { programName } = route.params || {};
 
-  // Filter the exercise data to include only items with value > 0
-  const filteredExerciseData = exerciseData.map(area => {
-    const filteredExercises = area.exerciseOp.filter(exercise => exercise.value > 0);
-    return { ...area, exerciseOp: filteredExercises };
-  }).filter(area => area.exerciseOp.length > 0); // Remove areas with no valid exercises
+
+  // // Filter the exercise data to include only items with value > 0
+  // const filteredExerciseData = exerciseData.map(area => {
+  //   const filteredExercises = area.exerciseOp.filter(exercise => exercise.value > 0);
+  //   return { ...area, exerciseOp: filteredExercises };
+  // }).filter(area => area.exerciseOp.length > 0); // Remove areas with no valid exercises
 
   return (
     <View style={styles.container}>
       <AppHeader/>
       <Text style={styles.title}>סיכום</Text>
       <Text style={styles.programName}>שם התוכנית: {programName}</Text>
-      <FlatList
+      {/* <FlatList
         data={filteredExerciseData}
         keyExtractor={(item) => item.areaName}
         renderItem={({ item }) => (
@@ -31,9 +34,9 @@ const Summary = () => {
                 <Text>{exercise.name}: {exercise.value}</Text>
               </View>
             ))}
-          </View>
-        )}
-      />
+          </View> */}
+        {/* )}
+      /> */}
     </View>
   );
 };

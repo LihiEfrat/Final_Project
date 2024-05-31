@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-from .models import Therapist, Patient, ProfessionalDetails, Preferences, Training
+from .models import Therapist, Patient, ProfessionalDetails, Preferences,Training, Exercise
 # here the request is sent from frondend to backend, fe - create new therapist
 class TherapistRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,7 +58,23 @@ class PreferencesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Preferences
         fields = '__all__'
-class TrainingDataSerilizers(serializers.ModelSerializer):
+
+class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Preferences
-        fields='__all__'
+        model = Exercise
+        fields = ['exercise_id', 'value']
+
+class TrainingSerializer(serializers.ModelSerializer):
+    exercises = ExerciseSerializer(many=True)
+    patient_id = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), source='user')
+
+    class Meta:
+        model = Training
+        fields = ['id', 'training_name', 'user_id', 'exercises']
+
+    def create(self, validated_data):
+        exercises_data = validated_data.pop('exercises')
+        training = Training.objects.create(**validated_data)
+        for exercise_data in exercises_data:
+            Exercise.objects.create(training=training, **exercise_data)
+        return training

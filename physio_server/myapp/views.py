@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Therapist, Patient, ProfessionalDetails, Preferences,Training
-from .serializers import TherapistRegistrationSerializer,TherapistSerializer, PatientSerializer, ProfessionalDetailsSerializer, PreferencesSerializer,TrainingDataSerilizers
+from .models import Therapist, Patient, ProfessionalDetails, Preferences,Training,Exercise
+from .serializers import TherapistRegistrationSerializer,TherapistSerializer, PatientSerializer, ProfessionalDetailsSerializer, PreferencesSerializer,TrainingSerializer, ExerciseSerializer
 from django.contrib.auth.hashers import check_password
 
 class CustomLoginView(APIView):
@@ -52,13 +52,7 @@ class PatientRegistrationView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class TrainingView(APIView):
-    def post(self, request):
-        serializer = TrainingDataSerilizers(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class TherapistViewSet(viewsets.ModelViewSet):
     queryset = Therapist.objects.all()
@@ -76,6 +70,26 @@ class PreferencesViewSet(viewsets.ModelViewSet):
     queryset = Preferences.objects.all()
     serializer_class = PreferencesSerializer
 
+class TrainingView(APIView):
+    def post(self, request):
+        serializer = TrainingSerializer(data=request.data)
+        if serializer.is_valid():
+            training = serializer.save()
+            return Response(TrainingSerializer(training).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ExerciseView(APIView):
+    def post(self, request):
+        serializer = ExerciseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class TrainingViewSet(viewsets.ModelViewSet):
-    queryset=Training.objects.all()
-    serializer_class=TrainingDataSerilizers
+    queryset = Training.objects.all()
+    serializer_class = TrainingSerializer
+
+class ExerciseViewSet(viewsets.ModelViewSet):
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
