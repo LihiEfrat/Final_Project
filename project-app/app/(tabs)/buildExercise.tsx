@@ -5,11 +5,11 @@ import { StyleSheet, Text, View, TouchableOpacity,Alert } from 'react-native';
 import ExList from './components/ExList';
 import Header from './components/AHeader';
 import Name from './components/Name';
-import AppHeader from './components/AppHeader';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Summary from './Summary';
 import { useNavigation } from '@react-navigation/native';
+import AppHeader from './components/AppHeader';
 
 
 

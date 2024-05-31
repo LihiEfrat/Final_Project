@@ -2,9 +2,14 @@ from django.shortcuts import render
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Therapist, Patient, ProfessionalDetails, Preferences
-from .serializers import TherapistRegistrationSerializer,TherapistSerializer, PatientSerializer, ProfessionalDetailsSerializer, PreferencesSerializer
+from .models import Therapist, Patient, ProfessionalDetails, Preferences, Exercise
+from .serializers import TherapistRegistrationSerializer,TherapistSerializer, PatientSerializer, ProfessionalDetailsSerializer, PreferencesSerializer, ExerciseSerializer
 from django.contrib.auth.hashers import check_password
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import ExerciseSerializer
+
 
 class CustomLoginView(APIView):
     def match_passwords(self, input_password, obj):
@@ -67,3 +72,18 @@ class ProfessionalDetailsViewSet(viewsets.ModelViewSet):
 class PreferencesViewSet(viewsets.ModelViewSet):
     queryset = Preferences.objects.all()
     serializer_class = PreferencesSerializer
+    
+class ExerciseViewSet(viewsets.ModelViewSet): 
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
+    
+
+@api_view(['POST'])
+def create_exercise(request):
+    if request.method == 'POST':
+        serializer = ExerciseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

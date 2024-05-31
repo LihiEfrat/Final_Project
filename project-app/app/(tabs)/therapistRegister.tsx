@@ -31,7 +31,8 @@ export default function RegisterToAppTherapist() {
             is_professional: isChecked,
         };
 
-        console.log(therapistData);        
+        // console.log(therapistData);        
+
 
         axios.post(`http://${URL}:8000/api/register/therapist/`, therapistData)
             .then(response => {

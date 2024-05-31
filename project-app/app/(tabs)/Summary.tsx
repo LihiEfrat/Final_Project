@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import AppHeader from './components/AppHeader';
 
 const Summary = () => {
   // const { programName, exerciseData } = route.params;
@@ -16,6 +17,7 @@ const Summary = () => {
 
   return (
     <View style={styles.container}>
+      <AppHeader/>
       <Text style={styles.title}>סיכום</Text>
       <Text style={styles.programName}>שם התוכנית: {programName}</Text>
       <FlatList
@@ -41,7 +43,7 @@ export default Summary;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 15,
     direction: 'rtl',
     textAlign: 'right',
     alignItems:'flex-start' // Align text to the right
