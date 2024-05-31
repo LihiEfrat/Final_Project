@@ -21,28 +21,28 @@ const addExercise = () => {
     const [text, setText] = useState("")
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
-    const [isChecked, setIsChecked] = useState(false);
+    // const [isChecked, setIsChecked] = useState(false);
     const [exerciseData, setExerciseData] = useState({
         name: '',
         category: '',
         description: '',
-        file: '', 
-        approval: '', 
-        user: '', 
+        // file: '', 
+        approval: false, 
+        // user: '', 
     });
 
     const handleSubmit = async () => {
         try {
             // const response = await axios.post('http://your-django-backend-url/create-exercise/', exerciseData);
-            const response = await axios.post('http://localhost:8000/create-exercise/', exerciseData);
+            const response = await axios.post('http://10.0.0.14:8000/api/create-exercise/', exerciseData);
             console.log(response.data); // Handle successful response
             // Optionally, reset form fields or show a success message
         } catch (error) {
-            console.error('Error:', error); // Handle error
+            console.error('Error:', error.response ? error.response.data : error.message); // Handle error
         }
     };
 
-    const handleChange = (field, value) => {
+    const handleChange = (field: any, value: any) => {
         setExerciseData({
             ...exerciseData,
             [field]: value,
@@ -54,8 +54,9 @@ const addExercise = () => {
             <View style={styles.mainContainer}>
                 <Text style={styles.titleText}> הוספת תרגיל למאגר</Text>
                 <TextInput
-                    defaultValue='שם התרגיל'
-                    onChangeText={txt => setText(txt)}
+                    placeholder='שם התרגיל'
+                    value={exerciseData.name}
+                    onChangeText={(text: any) => handleChange('name', text)}
                     style={[styles.input, { height: 40 }]}
                 />
 
@@ -63,7 +64,6 @@ const addExercise = () => {
                     style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
                     placeholderStyle={styles.placeholderStyle}
                     selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
                     inputSearchStyle={[styles.inputSearchStyle, { textAlign: 'right' }]}
                     data={data}
                     search
@@ -75,15 +75,17 @@ const addExercise = () => {
                     value={value}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
-                    onChange={item => {
+                    onChange={(item: {label(arg0: string, label: any): unknown; value: any;}) => {
                         setValue(item.value);
+                        handleChange('category', item.label); // Update category in exerciseData
                         setIsFocus(false);
                     }}
                 />
 
                 <TextInput
-                    defaultValue='פירוט התרגיל'
-                    onChangeText={txt => setText(txt)}
+                    placeholder='פירוט התרגיל'
+                    value={exerciseData.description}
+                    onChangeText={(text: any) => handleChange('description', text)}
                     multiline={true}
                     style={[styles.input, { height: 100, paddingTop: 10 }]}
                 />
@@ -100,15 +102,16 @@ const addExercise = () => {
 
                 <View style={styles.checkboxContainer}>
                     <TouchableOpacity
-                        style={[styles.checkbox, isChecked && { backgroundColor: '#19a6b8' }]}
-                        onPress={() => setIsChecked(!isChecked)}
+                        style={[styles.checkbox, exerciseData.approval && { backgroundColor: '#19a6b8' }]}
+                        onPress={() => handleChange('approval', !exerciseData.approval)}
                     >
-                        {isChecked && <AntDesign name="check" size={20} color="white" />}
+                        {exerciseData.approval && <AntDesign name="check" size={20} color="white" />}
+
                     </TouchableOpacity>
                     <Text style={{ color: 'black', fontSize: 16 }}>אישור הורדת התרגיל ותכניו במצב לא מקוון</Text>
                 </View>
 
-                <TouchableOpacity style={styles.saveButton} onPress={() => console.log('button pressed for saving changes')}>
+                <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
                     <Text style={{ color: 'white'}}> שמור שינויים </Text>
                 </TouchableOpacity>
 
