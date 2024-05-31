@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Scroll
 import Checkbox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import { Alert } from 'react-native';
 
 export default function RegisterToAppTherapist() {
     const [firstName, setFirstName] = useState('');
@@ -23,7 +24,7 @@ export default function RegisterToAppTherapist() {
         const therapistData = {
             first_name: firstName,
             last_name: lastName,
-            id: id,
+            user_id: id,
             license_id: licenseId,
             email: email,
             phone_number: phoneNumber,
@@ -40,7 +41,22 @@ export default function RegisterToAppTherapist() {
                 navigation.navigate('buttonsPageTherapist');
             })
             .catch(error => {
-                console.error(error);
+    
+                // Extract and display error messages from the response
+                if (error.response) {
+                    const { data } = error.response;
+                    if (data.errors) {
+                        // Display all errors returned from the backend
+                        const errorMessages = Object.values(data.errors).flat().join('\n');
+                        Alert.alert('Registration Error', errorMessages);
+                    } else {
+                        Alert.alert('Registration Error', 'An unknown error occurred. Please try again.');
+                    }
+                } else if (error.request) {
+                    Alert.alert('Registration Error', 'No response received. Please check your network connection.');
+                } else {
+                    Alert.alert('Registration Error', `Error: ${error.message}`);
+                }
             });
     };
 
