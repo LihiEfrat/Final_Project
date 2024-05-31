@@ -45,8 +45,10 @@ export default function RegisterToAppPatient() {
         formData.append('pain_scale', painScale);
         formData.append('height', height);
         formData.append('weight', weight);
-        formData.append('interested_in_notifications', interestedInNotifications);
-        formData.append('interested_in_calendar_sync', interestedInCalendarSync);
+        formData.append('preferences', JSON.stringify({
+            interested_in_notifications: interestedInNotifications,
+            interested_in_calendar_sync: interestedInCalendarSync
+        }));
 
         axios.post(`http://${URL}:8000/api/register/patient/`, formData, {
             headers: {
