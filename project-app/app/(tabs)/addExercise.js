@@ -68,6 +68,23 @@ const addExercise = () => {
             const response = await axios.post(`http://${URL}:8000/api/create-exercise/`, { ...exerciseData, videoId: video_id });
             
             console.log(response.data); // Handle successful response
+
+            // Upload the video to YouTube by making an API call to the Django server
+            const youtubeUploadResponse = await axios.post(`http://${URL}:8000/upload_to_youtube/`, {
+                file_uri: exerciseData.file.uri,
+                title: exerciseData.name,
+                description: exerciseData.description,
+                category: exerciseData.category,
+                tags: [], // you can add tags here if needed
+            });
+
+            if (youtubeUploadResponse.data.video_id) {
+                console.log(`Video uploaded to YouTube with ID: ${youtubeUploadResponse.data.video_id}`);
+                // You can perform additional actions after successful YouTube upload, if needed
+              } else {
+                console.error('Failed to upload video to YouTube:', youtubeUploadResponse.data.error);
+              }
+
             // Optionally, reset form fields or show a success message
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : error.message); // Handle error
@@ -76,9 +93,9 @@ const addExercise = () => {
 
     // when a user selects a video file using expo-image-picker, 
     // the function will update the exerciseData state with the selected video file. 
-    const handleChange = (field, value) => {
+    /*const handleChange = (field, value) => {
         console.log('handleChange called with:', field, value);
-        console.log('Selected video:', value);
+        // console.log('Selected video:', value);
 
         if (field === 'file') {
           // Handle the selected video file
@@ -87,6 +104,7 @@ const addExercise = () => {
             type: value.type,
             name: value.fileName || `video_${Date.now()}.${value.type.split('/')[1]}`,
           };
+          console.log('videoFile object:', videoFile);
       
         setExerciseData(prevState => {
             const updatedState = {
@@ -106,28 +124,68 @@ const addExercise = () => {
               return updatedState;
             });
           }
+        };*/ 
+
+    const handleChange = (field, value) => {
+        console.log('handleChange called with:', field, value);
+        
+        if (field === 'file') {
+            // Handle the selected video file
+            const videoFile = value.assets && value.assets.length > 0
+            ? {
+                uri: value.assets[0].uri,
+                type: value.assets[0].type || value.assets[0].mimeType,
+                name: value.assets[0].fileName || `video_${Date.now()}.${value.assets[0].type.split('/')[1] || 'mp4'}`,
+                }
+            : null;
+        
+            if (videoFile) {
+            console.log('videoFile object:', videoFile);
+        
+            setExerciseData(prevState => {
+                const updatedState = {
+                ...prevState,
+                [field]: videoFile,
+                };
+                console.log('Updated exerciseData:', updatedState);
+                return updatedState;
+            });
+            } else {
+            console.log('Invalid video file data');
+            }
+        } else {
+            setExerciseData(prevState => {
+            const updatedState = {
+                ...prevState,
+                [field]: value,
+            };
+            console.log('Updated exerciseData:', updatedState);
+            return updatedState;
+            });
+        }
         };
-    
-    
+
 
 
 
     const handleFilePick = async () => {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          console.log('Permission to access camera roll denied');
-          return;
-        }
-      
-        const result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-          allowsEditing: false,
-        });
-      
-        if (!result.cancelled) {
-          handleChange('file', result);
-        }
-      };
+    console.log('handleFilePick function called');
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+        console.log('Permission to access camera roll denied');
+        return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsEditing: false,
+    });
+
+    if (!result.cancelled) {
+        console.log('Video file selected:', result);
+        handleChange('file', result);
+    }
+    };
 
     
 

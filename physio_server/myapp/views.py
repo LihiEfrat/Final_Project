@@ -97,26 +97,16 @@ def create_exercise(request):
 @csrf_exempt
 def upload_video_view(request):
     if request.method == 'POST':
-        file = request.FILES['file']
+        file_uri = request.POST.get('file_uri')
         title = request.POST.get('title')
         description = request.POST.get('description')
-        category = request.POST.get('category', '22')
-        tags = request.POST.getlist('tags')
+        category = request.POST.get('category')
+        tags = request.POST.get('tags', [])
 
-        # Save the uploaded file temporarily
-        fs = FileSystemStorage()
-        filename = fs.save(file.name, file)
-        file_path = fs.path(filename)
+        try:
+            video_id = upload_video_to_youtube(file_uri, title, description, category, tags)
+            return JsonResponse({'video_id': video_id})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
 
-        # Upload to YouTube
-        video_id = upload_video_to_youtube(file_path, title, description, category, tags)
-
-        # Remove the file after uploading
-        fs.delete(filename)
-
-        if video_id:
-            return JsonResponse({'video_id': video_id}, status=200)
-        else:
-            return JsonResponse({'error': 'Video upload failed'}, status=500)
-
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=400)  
