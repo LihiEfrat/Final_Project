@@ -10,6 +10,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import ExerciseSerializer
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import FileSystemStorage
+from .upload_video import upload_video_to_youtube
+
 
 class CustomLoginView(APIView):
     def match_passwords(self, input_password, obj):
@@ -87,3 +92,31 @@ def create_exercise(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+@csrf_exempt
+def upload_video_view(request):
+    if request.method == 'POST':
+        file = request.FILES['file']
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        category = request.POST.get('category', '22')
+        tags = request.POST.getlist('tags')
+
+        # Save the uploaded file temporarily
+        fs = FileSystemStorage()
+        filename = fs.save(file.name, file)
+        file_path = fs.path(filename)
+
+        # Upload to YouTube
+        video_id = upload_video_to_youtube(file_path, title, description, category, tags)
+
+        # Remove the file after uploading
+        fs.delete(filename)
+
+        if video_id:
+            return JsonResponse({'video_id': video_id}, status=200)
+        else:
+            return JsonResponse({'error': 'Video upload failed'}, status=500)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)

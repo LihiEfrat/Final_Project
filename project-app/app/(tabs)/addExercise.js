@@ -1,10 +1,11 @@
 // Screen2.js
 
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput, Platform } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import axios from 'axios'; // Import Axios for making HTTP requests
+import * as ImagePicker from 'expo-image-picker';
 
 const data = [
     { label: 'כתף', value: '1' },
@@ -18,7 +19,7 @@ const data = [
 ];
 
 const addExercise = () => {
-    const [text, setText] = useState("")
+    // const [text, setText] = useState("")
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
     // const [isChecked, setIsChecked] = useState(false);
@@ -26,16 +27,46 @@ const addExercise = () => {
         name: '',
         category: '',
         description: '',
-        // file: '', 
+        file: null, // Add file to state
         approval: false, 
         // user: '', 
     });
 
     const URL = process.env.EXPO_PUBLIC_API_URL;
 
+    // the function will access the properties og the video file from exerciseData.file 
+    // and include them in the FormData object when uploading the video to the Django server. 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post(`http://${URL}:8000/api/create-exercise/`, exerciseData);
+            if (!exerciseData.file || !exerciseData.file.uri) {
+                console.error('Video file information missing');
+                return;
+            }
+
+            // Create form data for the video upload
+            const formData = new FormData();
+            formData.append('file', {
+                uri: exerciseData.file.uri,
+                name: exerciseData.file.name,
+                type: exerciseData.file.type
+            });
+            formData.append('title', exerciseData.name);
+            formData.append('description', exerciseData.description);
+            formData.append('category', exerciseData.category);
+
+            // Upload the video to the Django server
+            const uploadResponse = await axios.post(`http://${URL}:8000/upload/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            });
+
+            // Extract the video ID from the upload response
+            const { video_id } = uploadResponse.data;
+ 
+            // Then send other data to the server
+            const response = await axios.post(`http://${URL}:8000/api/create-exercise/`, { ...exerciseData, videoId: video_id });
+            
             console.log(response.data); // Handle successful response
             // Optionally, reset form fields or show a success message
         } catch (error) {
@@ -43,12 +74,62 @@ const addExercise = () => {
         }
     };
 
+    // when a user selects a video file using expo-image-picker, 
+    // the function will update the exerciseData state with the selected video file. 
     const handleChange = (field, value) => {
-        setExerciseData({
-            ...exerciseData,
-            [field]: value,
+        console.log('handleChange called with:', field, value);
+        console.log('Selected video:', value);
+
+        if (field === 'file') {
+          // Handle the selected video file
+          const videoFile = {
+            uri: value.uri,
+            type: value.type,
+            name: value.fileName || `video_${Date.now()}.${value.type.split('/')[1]}`,
+          };
+      
+        setExerciseData(prevState => {
+            const updatedState = {
+                ...prevState,
+                [field]: field === 'file' ? videoFile : value,
+            };
+            console.log('Updated exerciseData:', updatedState);
+            return updatedState;
         });
-    };
+        }else {
+            setExerciseData(prevState => {
+              const updatedState = {
+                ...prevState,
+                [field]: value,
+              };
+              console.log('Updated exerciseData:', updatedState);
+              return updatedState;
+            });
+          }
+        };
+    
+    
+
+
+
+    const handleFilePick = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          console.log('Permission to access camera roll denied');
+          return;
+        }
+      
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+          allowsEditing: false,
+        });
+      
+        if (!result.cancelled) {
+          handleChange('file', result);
+        }
+      };
+
+    
 
     return (
         <SafeAreaView>       
@@ -94,7 +175,9 @@ const addExercise = () => {
                 <View style={styles.uploadContainer}>
                     <TouchableOpacity
                         style={styles.uploadButton}
-                        onPress={() => console.log('Button pressed for uploading file')}
+                        // onPress={() => console.log('Button pressed for uploading file')}
+                        onPress={handleFilePick}
+
                     >
                         <AntDesign name="upload" size={24} color="white" />
                     </TouchableOpacity>

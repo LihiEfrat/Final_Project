@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import TherapistRegistrationView, PatientRegistrationView, CustomLoginView, TherapistViewSet, PatientViewSet, ProfessionalDetailsViewSet, PreferencesViewSet, ExerciseViewSet
+from .views import TherapistRegistrationView, PatientRegistrationView, CustomLoginView, TherapistViewSet, PatientViewSet, ProfessionalDetailsViewSet, PreferencesViewSet, ExerciseViewSet, upload_video_view
 
 # urls to django APIs
 router = DefaultRouter()
@@ -16,4 +16,5 @@ urlpatterns = [
     path('register/patient/', PatientRegistrationView.as_view(), name='patient-register'),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('create-exercise/', ExerciseViewSet.as_view({'post': 'create'}),name='create_exercise'),
+    path('upload/', upload_video_view, name='upload_video'),
 ]
