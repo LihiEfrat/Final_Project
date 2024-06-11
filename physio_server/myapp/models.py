@@ -47,3 +47,18 @@ class Exercise(models.Model):
     # imgUrl = models.FileField(upload_to='exercise_images/')
     # a foreign key relationship with the User model to store the user ID
     # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+class Training(models.Model):
+    training_name = models.CharField(max_length=100)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return self.training_name
+
+class ExercisePlan(models.Model):
+    exercise_id = models.CharField(max_length=100)
+    training = models.ForeignKey(Training, related_name='exercises_plan', on_delete=models.CASCADE)
+    value = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.exercise_id} - {self.training.training_name}'
