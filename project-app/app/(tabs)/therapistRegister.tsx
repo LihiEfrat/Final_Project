@@ -34,7 +34,7 @@ export default function RegisterToAppTherapist() {
 
         // console.log(therapistData);        
 
-
+        console.log(`SENDING FORM DATA http://${URL}:8000/api/register/therapist/`);
         axios.post(`http://${URL}:8000/api/register/therapist/`, therapistData)
             .then(response => {
                 console.log(response.data);

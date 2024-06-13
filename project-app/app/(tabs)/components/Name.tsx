@@ -34,6 +34,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
+const URL = process.env.EXPO_PUBLIC_API_URL;
+
 const Name = ({ programName, setProgramName }) => {
   return (
     <View style={styles.name}>

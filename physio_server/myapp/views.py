@@ -95,14 +95,21 @@ class PreferencesViewSet(viewsets.ModelViewSet):
     queryset = Preferences.objects.all()
     serializer_class = PreferencesSerializer
 
+# class TrainingView(APIView):
+#     def post(self, request):
+#         serializer = TrainingSerializer(data=request.data)
+#         if serializer.is_valid():
+#             training = serializer.save()
+#             return Response(TrainingSerializer(training).data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class TrainingView(APIView):
     def post(self, request):
+        print('Request data:', request.data)  # Add this line to print the request.data
         serializer = TrainingSerializer(data=request.data)
         if serializer.is_valid():
             training = serializer.save()
             return Response(TrainingSerializer(training).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class ExercisePlanView(APIView):
     def post(self, request):
         serializer = ExerciseSerializer(data=request.data)

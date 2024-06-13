@@ -55,10 +55,27 @@ class Training(models.Model):
     def __str__(self):
         return self.training_name
 
+# class ExercisePlan(models.Model):
+#     exercise_id = models.CharField(max_length=100)
+#     training = models.ForeignKey(Training, related_name='exercises_plan', on_delete=models.CASCADE)
+#     value = models.PositiveIntegerField()
+
+#     def __str__(self):
+#         return f'{self.exercise_id} - {self.training.training_name}'
+
+
+##gpt option 
+# class ExercisePlan(models.Model):
+#     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+#     training = models.ForeignKey(Training, related_name='exercises_plan', on_delete=models.CASCADE)
+#     value = models.PositiveIntegerField()
+
+#     def __str__(self):
+#         return f'{self.exercise.name} - {self.training.training_name}'
 class ExercisePlan(models.Model):
-    exercise_id = models.CharField(max_length=100)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, null=True, default=None)
     training = models.ForeignKey(Training, related_name='exercises_plan', on_delete=models.CASCADE)
     value = models.PositiveIntegerField()
 
     def __str__(self):
-        return f'{self.exercise_id} - {self.training.training_name}'
+        return f'{self.exercise.name if self.exercise else "No exercise"} - {self.training.training_name}'
