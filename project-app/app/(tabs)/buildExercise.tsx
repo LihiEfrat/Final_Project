@@ -192,11 +192,12 @@
 // });
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Picker, FlatList, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Button, TextInput } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import AppHeader from './components/AppHeader';
 import ExList from './components/ExList';
+import {Picker} from '@react-native-picker/picker';
 
 const BuildEx = () => {
   const [programName, setProgramName] = useState('');

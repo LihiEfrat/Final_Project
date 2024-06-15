@@ -156,6 +156,16 @@ def upload_video_view(request):
 
         try:
             video_id = upload_video_to_youtube(file_url, title, description, category, tags)
+    
+            exercise = Exercise(
+                name=title,
+                category=category,
+                description=description,
+                videoUrl=video_id,  # Store the YouTube video ID
+                approval=False  # Assuming approval is False initially
+            )
+            exercise.save()
+
             return JsonResponse({'video_id': video_id})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
