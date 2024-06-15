@@ -285,7 +285,6 @@ const ExList = ({ setExerciseData }) => {
   const incrementVal = (areaIndex, exerciseIndex) => {
     const newData = [...exerciseData];
     newData[areaIndex].exerciseOp[exerciseIndex].value++;
-    console.log(newData[areaIndex].exerciseOp[exerciseIndex].id);
     setExerciseDataState(newData);
   };
 

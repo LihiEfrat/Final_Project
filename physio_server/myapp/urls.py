@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import TherapistRegistrationView, PatientRegistrationView, CustomLoginView, TherapistViewSet, PatientViewSet, ProfessionalDetailsViewSet, PreferencesViewSet,TrainingViewSet,TrainingView,ExerciseViewSet,ExercisePlanView,ExercisePlanViewSet
+from .views import TherapistRegistrationView, PatientRegistrationView, CustomLoginView, TherapistViewSet, PatientViewSet, ProfessionalDetailsViewSet, PreferencesViewSet,TrainingViewSet,TrainingView,ExerciseViewSet,ExercisePlanView,ExercisePlanViewSet, upload_video_view
 
 
 
@@ -22,4 +22,6 @@ urlpatterns = [
     path('register/training/',TrainingView.as_view(),name='training'),
     path('register/exercise_plan/',ExercisePlanView.as_view(),name='exercise_plan'),
     path('create-exercise/', ExerciseViewSet.as_view({'post': 'create'}),name='create_exercise'),
+    path('upload/', upload_video_view, name='upload_video'),
+    path('exercise/getAll/', ExerciseViewSet.as_view({'get': 'list'}), name='get-all-exercise'),
 ]

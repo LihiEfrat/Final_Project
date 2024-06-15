@@ -309,12 +309,13 @@
 
 //..............after gpt...........
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Button, TextInput, Alert } from 'react-native';
 import axios from 'axios';
 import AppHeader from './components/AppHeader';
 import AHeader from  './components/AHeader';
 import Name from './components/Name'; // Import the Name component
 import ExList from './components/ExList';
+import {Picker} from '@react-native-picker/picker';
 
 const BuildEx = () => {
   const [programName, setProgramName] = useState('');

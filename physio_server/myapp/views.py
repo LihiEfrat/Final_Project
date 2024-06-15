@@ -14,6 +14,13 @@ from rest_framework.response import Response
 from .serializers import ExerciseSerializer
 from rest_framework.exceptions import ValidationError
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import FileSystemStorage
+from .upload_video import upload_video_to_youtube
+from django.core.files.storage import default_storage
+import os
+
 
 class CustomLoginView(APIView):
     def match_passwords(self, input_password, obj):
@@ -148,5 +155,38 @@ def create_exercise(request):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@csrf_exempt
+def upload_video_view(request):
+    if request.method == 'POST':
+        video = request.FILES['file']
+        file_name = default_storage.save(video.name, video)
+        file_url = default_storage.path(file_name)
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        category = "22"
+        tags = request.POST.get('tags', [])
 
+        try:
+            video_id = upload_video_to_youtube(file_url, title, description, category, tags)
+    
+            exercise = Exercise(
+                name=title,
+                category=category,
+                description=description,
+                videoUrl=video_id,  # Store the YouTube video ID
+                approval=False  # Assuming approval is False initially
+            )
+            exercise.save()
+
+            return JsonResponse({'video_id': video_id})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+        finally:  
+            if os.path.exists(file_url):
+                os.remove(file_url)
+
+    if os.path.exists(file_url):
+       os.remove(file_url)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)  
 
