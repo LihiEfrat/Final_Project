@@ -314,7 +314,7 @@ import axios from 'axios';
 import AppHeader from './components/AppHeader';
 import AHeader from  './components/AHeader';
 import Name from './components/Name'; // Import the Name component
-import ExList from './components/ExList'; // Import the ExList component
+import ExList from './components/ExList';
 
 const BuildEx = () => {
   const [programName, setProgramName] = useState('');
@@ -337,41 +337,7 @@ const BuildEx = () => {
   // }, []);
 
 
-  
-  // const handleTrainingSave = () => {
-  //   if (!programName || !exerciseData.length) {
-  //     Alert.alert('Error', 'Please enter a program name and select at least one exercise');
-  //     return;
-  //   }
-  
-  //   // const trainingData = {
-  //   //   training_name: programName,
-  //   //   patient_id: 1, // Example patient ID
-  //   //   exercises_plans: exerciseData.map(exercise => ({
-  //   //     exercise: exercise.id, // Use the exercise ID here
-  //   //     value: exercise.value,
-  //   //   })),
-  //   const trainingData = {
-  //     training_name: programName,
-  //     patient_id: 1, // Example patient ID
-  //     exercises_plans: exerciseData.map(exercise => ({
-  //       exercise: exercises.find(ex => ex.name === exercise.name).id, // Use the exercise ID here
-  //       value: exercise.value,
-  //     })),
-  //   };
-  
-  //   console.log('Sending training data:', trainingData); // Add this line to log the trainingData
-  
-  //   axios.post(`http://${URL}:8000/api/register/training/`, trainingData)
-  //     .then(response => {
-  //       console.log('Response data:', response.data);
-  //       Alert.alert('Success', 'Training plan saved successfully');
-  //     })
-  //     .catch(error => {
-  //       console.error('Error response:', error.response);
-  //       Alert.alert('Error', 'Failed to save training plan');
-  //     });
-  // };
+
 
   const handleTrainingSave = () => {
     if (!programName || !exerciseData.length) {
@@ -381,19 +347,11 @@ const BuildEx = () => {
   
     const trainingData = {
       training_name: programName,
-      patient_id: 1, // Example patient ID
-      exercises_plans: exerciseData.map(exercise => {
-        const matchingExercise = exercises.find(ex => ex.name === exercise.name);
-        if (matchingExercise) {
-          return {
-            exercise: matchingExercise.id,
-            value: exercise.value,
-          };
-        } else {
-          console.warn(`No matching Exercise found for ${exercise.name}`);
-          return null; // or return an object with default values if needed
-        }
-      }).filter(Boolean), // Remove null values from the array
+      patient_id: 1, // Replace with actual patient ID
+      exercises_plan: exerciseData.map(exercise => ({
+        exercise_id: exercise.id, // Use exercise.name as the exercise identifier
+        value: exercise.value,
+      })),
     };
   
     console.log('Sending training data:', trainingData);

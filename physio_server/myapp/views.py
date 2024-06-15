@@ -102,6 +102,9 @@ class PreferencesViewSet(viewsets.ModelViewSet):
 #             training = serializer.save()
 #             return Response(TrainingSerializer(training).data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 class TrainingView(APIView):
     def post(self, request):
         print('Request data:', request.data)  # Add this line to print the request.data
@@ -110,6 +113,9 @@ class TrainingView(APIView):
             training = serializer.save()
             return Response(TrainingSerializer(training).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+        
 class ExercisePlanView(APIView):
     def post(self, request):
         serializer = ExerciseSerializer(data=request.data)
@@ -141,3 +147,6 @@ def create_exercise(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+

@@ -73,7 +73,8 @@ class Training(models.Model):
 #     def __str__(self):
 #         return f'{self.exercise.name} - {self.training.training_name}'
 class ExercisePlan(models.Model):
-    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, null=True, default=None)
+    # exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, null=True, default=None)
+    exercise_id=models.CharField(max_length=100)
     training = models.ForeignKey(Training, related_name='exercises_plan', on_delete=models.CASCADE)
     value = models.PositiveIntegerField()
 
