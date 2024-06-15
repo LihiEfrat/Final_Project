@@ -50,48 +50,48 @@
 // //   //   }
 // //   // };
 
-// //   return (
-// //     <View style={styles.container}>
-// //       <AppHeader/>
-// //       <Header />
-// //       <Name programName={programName} setProgramName={setProgramName} />
+//   return (
+//     <View style={styles.container}>
+//       <AppHeader/>
+//       <Header />
+//       <Name programName={programName} setProgramName={setProgramName} />
       
-// //       <ExList setExerciseData={setExerciseData} />
-// //       <TouchableOpacity style={styles.button} onPress={handleTrainingSave}>
-// //         <Text style={styles.buttonText}>שמור</Text>
-// //       </TouchableOpacity>
-// //     </View>
-// //   );
-// // };
+//       <ExList setExerciseData={setExerciseData} />
+//       <TouchableOpacity style={styles.button} onPress={handleTrainingSave}>
+//         <Text style={styles.buttonText}>שמור</Text>
+//       </TouchableOpacity>
+//     </View>
+//   );
+// };
 
-// // export default BuildEx;
+// export default BuildEx;
 
-// // const styles = StyleSheet.create({
-// //   container: {
-// //     flex: 1,
-// //     direction: 'rtl',
-// //   },
-// //   button: {
-// //     alignItems: 'center',
-// //     justifyContent: 'center',
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     direction: 'rtl',
+//   },
+//   button: {
+//     alignItems: 'center',
+//     justifyContent: 'center',
     
-// //     marginTop:15,
-// //     paddingVertical: 12,
-// //     paddingHorizontal: 32,
-// //     borderRadius: 4,
-// //     elevation: 3,
-// //     backgroundColor: '#42B8D5',
-// //     // alignSelf: 'flex-start',
-// //   },
-// //   buttonText: {
-// //     fontSize: 16,
-// //     lineHeight: 21,
-// //     fontWeight: 'bold',
-// //     letterSpacing: 0.25,
-// //     color: 'white',
-// //     textAlign: 'right',
-// //   },
-// // });
+//     marginTop:15,
+//     paddingVertical: 12,
+//     paddingHorizontal: 32,
+//     borderRadius: 4,
+//     elevation: 3,
+//     backgroundColor: '#42B8D5',
+//     // alignSelf: 'flex-start',
+//   },
+//   buttonText: {
+//     fontSize: 16,
+//     lineHeight: 21,
+//     fontWeight: 'bold',
+//     letterSpacing: 0.25,
+//     color: 'white',
+//     textAlign: 'right',
+//   },
+// });
 
 // import React, { useState } from 'react';
 // import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
@@ -191,76 +191,191 @@
 //   },
 // });
 
+//before gpt
+
+// import React, { useState, useEffect } from 'react';
+// import { StyleSheet, Text, View, TouchableOpacity, FlatList, Button, TextInput } from 'react-native';
+// import axios from 'axios';
+// import {Picker} from '@react-native-picker/picker';
+
+// import { useNavigation } from '@react-navigation/native';
+// import AppHeader from './components/AppHeader';
+// import ExList from './components/ExList';
+// import Name from './components/Name';
+// const BuildEx = () => {
+//   const [programName, setProgramName] = useState('');
+//   const [userId, setUserId] = useState(null);
+//   const [users, setUsers] = useState([]);
+//   const [exerciseData, setExerciseData] = useState([]);
+//   const navigation = useNavigation();
+
+//   const URL = process.env.EXPO_PUBLIC_API_URL;
+
+//   useEffect(() => {
+//     axios.get(`http://${URL}:8000/api/users/`)
+//       .then(response => {
+//         setUsers(response.data);
+//       })
+//       .catch(error => {
+//         console.error(error);
+//       });
+//   }, []);
+
+//   const handleTrainingSave = () => {
+//     const trainingData = {
+//       training_name: 'programName',
+//       user_id: 1111,
+//       patient:1,
+//       exercises: exerciseData.flatMap(area =>
+//         area.exerciseOp.filter(ex => ex.value > 0).map(ex => ({
+//           exercise_id: ex.name,
+//           value: ex.value
+//         }))
+//       ),
+//     };
+
+//     console.log(trainingData);
+//     console.log(`SENDING build ex`, `http://${URL}:8000/api/register/exercise_plan/`);
+
+//     axios.post(`http://${URL}:8000/api/register/exercise_plan/`, trainingData)
+//       .then(response => {
+//         console.log(response.data);
+//         navigation.navigate('Summary');
+//       })
+//       .catch(error => {
+//         console.error(error);
+//       });
+//   };
+
+//   return (
+//     <View style={styles.container}>
+//       <AppHeader />
+//       <Name/>
+//       <Picker
+//         selectedValue={userId}
+//         onValueChange={(itemValue) => setUserId(itemValue)}
+//         style={styles.picker}
+//       >
+//         {users.map((user) => (
+//           <Picker.Item key={user.id} label={user.username} value={user.id} />
+//         ))}
+//       </Picker>
+//       <ExList setExerciseData={setExerciseData} />
+//       <TouchableOpacity style={styles.button} onPress={handleTrainingSave}>
+//         <Text style={styles.buttonText}>Save</Text>
+//       </TouchableOpacity>
+//     </View>
+//   );
+// };
+
+// export default BuildEx;
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     direction: 'rtl',
+//   },
+//   input: {
+//     height: 40,
+//     borderColor: 'gray',
+//     borderWidth: 1,
+//     margin: 10,
+//     padding: 5,
+//   },
+//   picker: {
+//     height: 50,
+//     width: 150,
+//   },
+//   button: {
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     marginTop: 15,
+//     paddingVertical: 12,
+//     paddingHorizontal: 32,
+//     borderRadius: 4,
+//     elevation: 3,
+//     backgroundColor: '#42B8D5',
+//   },
+//   buttonText: {
+//     fontSize: 16,
+//     lineHeight: 21,
+//     fontWeight: 'bold',
+//     letterSpacing: 0.25,
+//     color: 'white',
+//     textAlign: 'right',
+//   },
+// });
+
+
+//..............after gpt...........
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Button, TextInput, Alert } from 'react-native';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
 import AppHeader from './components/AppHeader';
+import AHeader from  './components/AHeader';
+import Name from './components/Name'; // Import the Name component
 import ExList from './components/ExList';
 import {Picker} from '@react-native-picker/picker';
 
 const BuildEx = () => {
   const [programName, setProgramName] = useState('');
-  const [userId, setUserId] = useState(null);
-  const [users, setUsers] = useState([]);
+  const [patientId, setPatientId] = useState(''); // Replace with actual patient ID
+  const [exercises, setExercises] = useState([]);
   const [exerciseData, setExerciseData] = useState([]);
-  const navigation = useNavigation();
 
-  useEffect(() => {
-    axios.get('http://10.100.102.16:8000/api/users/')
-      .then(response => {
-        setUsers(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
+  const URL = process.env.EXPO_PUBLIC_API_URL;
+
+  // useEffect(() => {
+  //   // Fetch exercises from backend
+  //   axios.get(`http://${URL}:8000/api/exercises/`)
+  //     .then(response => {
+  //       setExercises(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //       Alert.alert('Error', 'Failed to fetch exercises');
+  //     });
+  // }, []);
+
+
+
 
   const handleTrainingSave = () => {
+    if (!programName || !exerciseData.length) {
+      Alert.alert('Error', 'Please enter a program name and select at least one exercise');
+      return;
+    }
+  
     const trainingData = {
       training_name: programName,
-      user_id: userId,
-      exercises: exerciseData.flatMap(area =>
-        area.exerciseOp.filter(ex => ex.value > 0).map(ex => ({
-          exercise_id: ex.name,
-          value: ex.value
-        }))
-      ),
+      patient_id: 1, // Replace with actual patient ID
+      exercises_plan: exerciseData.map(exercise => ({
+        exercise_id: exercise.id, // Use exercise.name as the exercise identifier
+        value: exercise.value,
+      })),
     };
-
-    console.log(trainingData);
-
-    axios.post('http://10.100.102.16:8000/api/trainings/', trainingData)
+  
+    console.log('Sending training data:', trainingData);
+  
+    axios.post(`http://${URL}:8000/api/register/training/`, trainingData)
       .then(response => {
-        console.log(response.data);
-        navigation.navigate('Summary');
+        console.log('Response data:', response.data);
+        Alert.alert('Success', 'Training plan saved successfully');
       })
       .catch(error => {
-        console.error(error);
+        console.error('Error response:', error.response);
+        Alert.alert('Error', 'Failed to save training plan');
       });
   };
 
   return (
     <View style={styles.container}>
-      <AppHeader />
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Training Name"
-        value={programName}
-        onChangeText={setProgramName}
-      />
-      <Picker
-        selectedValue={userId}
-        onValueChange={(itemValue) => setUserId(itemValue)}
-        style={styles.picker}
-      >
-        {users.map((user) => (
-          <Picker.Item key={user.id} label={user.username} value={user.id} />
-        ))}
-      </Picker>
+      <AppHeader/>
+      <AHeader />
+      <Name programName={programName} setProgramName={setProgramName} />
       <ExList setExerciseData={setExerciseData} />
       <TouchableOpacity style={styles.button} onPress={handleTrainingSave}>
-        <Text style={styles.buttonText}>Save</Text>
+        <Text style={styles.buttonText}>שמור</Text>
       </TouchableOpacity>
     </View>
   );
@@ -272,17 +387,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     direction: 'rtl',
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    margin: 10,
-    padding: 5,
-  },
-  picker: {
-    height: 50,
-    width: 150,
   },
   button: {
     alignItems: 'center',

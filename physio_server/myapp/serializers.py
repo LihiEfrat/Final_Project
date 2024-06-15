@@ -93,29 +93,78 @@ class PreferencesSerializer(serializers.ModelSerializer):
         model = Preferences
         fields = '__all__'
 
-class ExercisePlanSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ExercisePlan
-        fields = ['exercise_id', 'value']
+# class ExercisePlanSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ExercisePlan
+#         fields = ['exercise_id', 'value']
 
-class TrainingSerializer(serializers.ModelSerializer):
-    exercises_plans = ExercisePlanSerializer(many=True)
-    patient_id = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), source='user')
+# class TrainingSerializer(serializers.ModelSerializer):
+#     print('ib srkz')
+#     exercises_plans = ExercisePlanSerializer(many=True)
+#     patient_id = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), source='user')
 
-    class Meta:
-        model = Training
-        fields = ['id', 'training_name', 'user_id', 'exercises_plans']
+#     class Meta:
+#         model = Training
+#         fields = ['id', 'training_name', 'user_id', 'exercises_plans']
 
-    def create(self, validated_data):
-        exercises_plans_data = validated_data.pop('exercises_plans')
-        training = Training.objects.create(**validated_data)
-        for exercise_plan_data in exercises_plans_data:
-            ExercisePlan.objects.create(training=training, **exercise_plan_data)
-        return training
+#     def create(self, validated_data):
+#         print ('create')
+#         exercises_plans_data = validated_data.pop('exercises_plans')
+#         training = Training.objects.create(**validated_data)
+#         for exercise_plan_data in exercises_plans_data:
+#             ExercisePlan.objects.create(training=training, **exercise_plan_data)
+#         return training
 
         
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
         fields = '__all__'
+
+# # gpt option 
+class ExercisePlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExercisePlan
+        fields = ['exercise_id', 'value']
+# ---------working from cloude w/o exercises
+# class TrainingSerializer(serializers.ModelSerializer):
+#     exercises_plan = ExercisePlanSerializer(many=True, read_only=True)
+#     patient_id = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), source='patient')
+
+#     class Meta:
+#         model = Training
+#         fields = ['id', 'training_name', 'patient_id', 'exercises_plan']
+
+#     def create(self, validated_data):
+#         exercises_plans_data = validated_data.pop('exercises_plans', [])  # Use 'exercises_plans' key
+#         training = Training.objects.create(**validated_data)
+#         for exercise_plan_data in exercises_plans_data:
+#             ExercisePlan.objects.create(training=training, **exercise_plan_data)
+#         return training
+
+# -----------new 
+class TrainingSerializer(serializers.ModelSerializer):
+    exercises_plan = ExercisePlanSerializer(many=True)
+    patient_id = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), source='patient')
+
+    class Meta:
+        model = Training
+        fields = ['id', 'training_name', 'patient_id', 'exercises_plan']
+
+    def create(self, validated_data):
+        exercises_plan_data = validated_data.pop('exercises_plan', [])
+        training = Training.objects.create(**validated_data)
+
+        for exercise_plan_data in exercises_plan_data:
+            exercise_id = exercise_plan_data.get('exercise_id')
+            value = exercise_plan_data.get('value')
+
+            if exercise_id and value:
+                exercise = Exercise.objects.get(Eid=exercise_id)
+                ExercisePlan.objects.create(training=training, exercise_id=exercise.Eid, value=value)
+
+        return training
+
+
+
 
