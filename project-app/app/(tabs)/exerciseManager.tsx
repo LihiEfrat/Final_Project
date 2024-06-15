@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, FlatList, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AppHeader from './components/AppHeader';
@@ -17,11 +17,13 @@ const exerciseData = [
 
 // ExerciseItem component to render each exercise
 const ExerciseItem = ({ item }) => {
+    console.log(item);
+    const url = 'https://www.youtube.com/watch?v=' + item.videoUrl
     return (
         <View style={styles.exerciseItem}>
             {/* Display exercise content */}
             <View style={styles.videoClip}>
-                <YouTubePlayer videoUrl={item.url}/>
+                <YouTubePlayer videoUrl={url}/>
             </View>
             <Text style={{ textAlign: 'center', width: 100 }}>{item.title}</Text>
         </View>
@@ -30,7 +32,31 @@ const ExerciseItem = ({ item }) => {
 
 
 const exerciseManager = () => {
+    const URL = process.env.EXPO_PUBLIC_API_URL;
+
     const navigation = useNavigation();
+    const [exerciseData, setExerciseData] = useState([]); // Initialize state for exercise data
+
+    console.log(`http://${URL}:8000/api/exercise/getAll`);
+    
+    useEffect(() => {
+        // Function to fetch exercise data from API
+        const fetchExerciseData = async () => {
+            try {
+                const response = await fetch(`http://${URL}:8000/api/exercise/getAll/`); // Replace with your API endpoint
+                console.log('The response is',response);
+                
+                const data = await response.json();
+                console.log('The response data is',data);
+                setExerciseData(data); // Update state with fetched data
+            } catch (error) {
+                console.error('Error fetching exercise data:', error);
+            }
+        };
+
+        // Call the function to fetch exercise data
+        fetchExerciseData();
+    }, []); // Empty dependency array ensures this runs only once on mount
 
     return (
         <SafeAreaView style={{flex: 1, direction: 'rtl', backgroundColor:'white'}}>

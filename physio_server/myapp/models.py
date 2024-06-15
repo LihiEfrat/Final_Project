@@ -42,7 +42,7 @@ class Exercise(models.Model):
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=100)
     description = models.TextField()
-    # videoUrl = models.CharField(max_length=100, null=True)
+    videoUrl = models.CharField(max_length=100)
     approval = models.BooleanField(default=False)
     # imgUrl = models.FileField(upload_to='exercise_images/')
     # a foreign key relationship with the User model to store the user ID

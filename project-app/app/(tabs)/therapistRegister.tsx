@@ -32,9 +32,11 @@ export default function RegisterToAppTherapist() {
             is_professional: isChecked,
         };
 
-        // console.log(therapistData);        
+        console.log(therapistData);        
+        console.log(`Making request to: http://${URL}:8000/api/register/therapist/`);
 
-
+        navigation.navigate('buttonsPageTherapist');
+        
         axios.post(`http://${URL}:8000/api/register/therapist/`, therapistData)
             .then(response => {
                 console.log(response.data);
