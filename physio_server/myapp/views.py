@@ -14,6 +14,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from .upload_video import upload_video_to_youtube
+from django.core.files.storage import default_storage
+import os
 
 
 class CustomLoginView(APIView):
@@ -97,16 +99,24 @@ def create_exercise(request):
 @csrf_exempt
 def upload_video_view(request):
     if request.method == 'POST':
-        file_uri = request.POST.get('file_uri')
+        video = request.FILES['file']
+        file_name = default_storage.save(video.name, video)
+        file_url = default_storage.path(file_name)
         title = request.POST.get('title')
         description = request.POST.get('description')
-        category = request.POST.get('category')
+        category = "22"
         tags = request.POST.get('tags', [])
 
         try:
-            video_id = upload_video_to_youtube(file_uri, title, description, category, tags)
+            video_id = upload_video_to_youtube(file_url, title, description, category, tags)
             return JsonResponse({'video_id': video_id})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
+        finally:  
+            if os.path.exists(file_url):
+                os.remove(file_url)
+
+    if os.path.exists(file_url):
+       os.remove(file_url)
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)  
