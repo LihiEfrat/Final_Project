@@ -25,10 +25,12 @@ export default function RegisterToAppPatient() {
     const URL = process.env.EXPO_PUBLIC_API_URL;
 
     const handleRegisterPress = () => {
+        console.log('pain_scale', painScale);
+        
         const formData = new FormData();
         formData.append('first_name', firstName);
         formData.append('last_name', lastName);
-        formData.append('id', id);
+        formData.append('user_id', id);
         formData.append('email', email);
         formData.append('phone_number', phoneNumber);
         formData.append('password', password);
@@ -43,8 +45,10 @@ export default function RegisterToAppPatient() {
         formData.append('pain_scale', painScale);
         formData.append('height', height);
         formData.append('weight', weight);
-        formData.append('interested_in_notifications', interestedInNotifications);
-        formData.append('interested_in_calendar_sync', interestedInCalendarSync);
+        formData.append('preferences', JSON.stringify({
+            interested_in_notifications: interestedInNotifications,
+            interested_in_calendar_sync: interestedInCalendarSync
+        }));
 
         axios.post(`http://${URL}:8000/api/register/patient/`, formData, {
             headers: {
@@ -136,6 +140,7 @@ export default function RegisterToAppPatient() {
                         style={{ width: 300, height: 40 }}
                         minimumValue={0}
                         maximumValue={100}
+                        step={1}
                         minimumTrackTintColor="blue"
                         maximumTrackTintColor="red"
                         value={painScale}
