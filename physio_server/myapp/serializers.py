@@ -125,7 +125,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
 class ExercisePlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExercisePlan
-        fields = ['exercise_id', 'value', 'id']
+        fields = ['exercise_id', 'value']
 # ---------working from cloude w/o exercises
 # class TrainingSerializer(serializers.ModelSerializer):
 #     exercises_plan = ExercisePlanSerializer(many=True, read_only=True)
@@ -153,7 +153,6 @@ class TrainingSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         exercises_plan_data = validated_data.pop('exercises_plan', [])
-        print("banana",exercises_plan_data)
         training = Training.objects.create(**validated_data)
 
         for exercise_plan_data in exercises_plan_data:
