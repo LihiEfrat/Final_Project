@@ -55,7 +55,7 @@ const addExercise = () => {
             formData.append('category', exerciseData.category);
 
             // Upload the video to the Django server
-            const uploadResponse = await axios.post(`http://${URL}:8000/upload/`, formData, {
+            const uploadResponse = await axios.post(`http://${URL}:8000/api/upload/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }

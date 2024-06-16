@@ -8,9 +8,10 @@ import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
+import traceback
 
 # Define constants
-CREDENTIALS_FILE = "credentials.json"
+CREDENTIALS_FILE = "/Users/nitzanl/Desktop/Final_Project/physio_server/myapp/credentials.json"
 CLIENT_SECRETS_FILE = "client_secret.json"
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 API_SERVICE_NAME = "youtube"
@@ -72,6 +73,7 @@ def upload_video_to_youtube(file, title, description, category="22", tags=[]):
         return video_id
     except Exception as e:
         print(f"An error occurred: {e}")
+        traceback.print_exc()
         return None
 
 
