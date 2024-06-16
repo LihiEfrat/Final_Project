@@ -61,29 +61,29 @@ const addExercise = () => {
                 }
             });
 
-            // Extract the video ID from the upload response
-            const { video_id } = uploadResponse.data;
+            // // Extract the video ID from the upload response
+            // const { video_id } = uploadResponse.data;
  
-            // Then send other data to the server
-            const response = await axios.post(`http://${URL}:8000/api/create-exercise/`, { ...exerciseData, videoId: video_id });
+            // // Then send other data to the server
+            // const response = await axios.post(`http://${URL}:8000/api/create-exercise/`, { ...exerciseData, videoId: video_id });
             
-            console.log(response.data); // Handle successful response
+            // console.log(response.data); // Handle successful response
 
-            // Upload the video to YouTube by making an API call to the Django server
-            const youtubeUploadResponse = await axios.post(`http://${URL}:8000/upload_to_youtube/`, {
-                file_uri: exerciseData.file.uri,
-                title: exerciseData.name,
-                description: exerciseData.description,
-                category: exerciseData.category,
-                tags: [], // you can add tags here if needed
-            });
+            // // Upload the video to YouTube by making an API call to the Django server
+            // const youtubeUploadResponse = await axios.post(`http://${URL}:8000/upload_to_youtube/`, {
+            //     file_uri: exerciseData.file.uri,
+            //     title: exerciseData.name,
+            //     description: exerciseData.description,
+            //     category: exerciseData.category,
+            //     tags: [], // you can add tags here if needed
+            // });
 
-            if (youtubeUploadResponse.data.video_id) {
-                console.log(`Video uploaded to YouTube with ID: ${youtubeUploadResponse.data.video_id}`);
-                // You can perform additional actions after successful YouTube upload, if needed
-              } else {
-                console.error('Failed to upload video to YouTube:', youtubeUploadResponse.data.error);
-              }
+            // if (youtubeUploadResponse.data.video_id) {
+            //     console.log(`Video uploaded to YouTube with ID: ${youtubeUploadResponse.data.video_id}`);
+            //     // You can perform additional actions after successful YouTube upload, if needed
+            //   } else {
+            //     console.error('Failed to upload video to YouTube:', youtubeUploadResponse.data.error);
+            //   }
 
             // Optionally, reset form fields or show a success message
         } catch (error) {
