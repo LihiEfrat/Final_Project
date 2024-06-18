@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
@@ -10,6 +11,9 @@ const buttonsPageTherapist = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
+        <Ionicons name="arrow-back" size={35} color="black" />
+      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('exerciseManager')}>
         <Text style={styles.buttonText}>ניהול מאגר תרגילים</Text>
       </TouchableOpacity>
@@ -42,6 +46,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  arrow: {
+    position: 'absolute',
+    top: 40, 
+    left: 20,
+    paddingTop: 30,   
   },
 });
 
