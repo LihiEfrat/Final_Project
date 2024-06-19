@@ -23,7 +23,7 @@ class Therapist(User):
     is_professional = models.BooleanField(default=False)
 
 class Patient(User):
-    id_photo = models.ImageField(upload_to='id_photos/')
+    # id_photo = models.ImageField(upload_to='id_photos/')
     injury = models.TextField()
     pain_scale = models.IntegerField()
     height = models.FloatField()

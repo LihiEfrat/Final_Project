@@ -10,7 +10,8 @@ const AppHeader = () => {
   return (
     <View style={styles.header}>
        
-       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
+       <TouchableOpacity onPress={() => navigation.navigate('buttonsPageTherapist')} style={styles.arrow}>
+      
         <Icon name='arrow-forward-outline' size={36} color="#1E98D7" />
       </TouchableOpacity>
       <Image source={require('../logo.jpg')} style={styles.logo}/>

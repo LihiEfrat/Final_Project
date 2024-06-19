@@ -7,14 +7,14 @@
 import json
 import google_auth_oauthlib.flow
 
-CLIENT_SECRETS_FILE = "client_secret.json"
+CLIENT_SECRETS_FILE = "upload_via_api\client_secret.json"
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 
 def get_tokens():
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
         CLIENT_SECRETS_FILE, SCOPES)
     credentials = flow.run_local_server(port=0)
-    with open("credentials.json", "w") as f:
+    with open("upload_via_api\credentials.json", "w") as f:
         json.dump({
             "token": credentials.token,
             "refresh_token": credentials.refresh_token,
