@@ -67,11 +67,12 @@ const addExercise = () => {
             });
 
             setIsLoading(false); // Set loading state to false
+            console.log(uploadResponse.data)
 
             // Handle the response from the backend
-            if (uploadResponse.data.success) { 
+            if (uploadResponse.data.video_id && uploadResponse.data.video_id.success) { 
                 console.log('Upload successful'); 
-                Alert.alert('Success', 'Video upload the successfuly!');
+                Alert.alert('Success', 'Video uploaded successfully!');
                 setExerciseData({
                     name: '',
                     category: '',
@@ -80,7 +81,7 @@ const addExercise = () => {
                     approval: false,
                 });
                 
-                navigation.goBack(); // Navigate back to the previous screen
+                navigation.navigate('exerciseManager'); // Navigate back to the previous screen
                 return; // for debug 
             } else {
                 console.log('Upload failed'); 
