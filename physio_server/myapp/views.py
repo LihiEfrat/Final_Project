@@ -84,6 +84,12 @@ class PatientRegistrationView(APIView):
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class PatientView(APIView):
+    def get(self, request):
+        patients = Patient.objects.all()
+        serializer = PatientSerializer(patients)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TherapistViewSet(viewsets.ModelViewSet):
