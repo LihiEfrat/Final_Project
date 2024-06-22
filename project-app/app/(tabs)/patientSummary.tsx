@@ -66,8 +66,7 @@ const patientSummary = () => {
     <View style={styles.container}>
       <AppHeader />
       <View style={styles.righttl}>
-      <Text style={styles.title}>סיכום תרגול</Text>
-      <Text style={styles.programName}>מטופל: {summaryData.patient_id}</Text>
+      <Text style={styles.title}>התוכנית שלי</Text>
       <Text style={styles.programName}>שם תוכנית: {summaryData.training_name}</Text>
       </View>
       <FlatList
