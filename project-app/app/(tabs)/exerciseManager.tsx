@@ -38,14 +38,14 @@
 //     const [exerciseData, setExerciseData] = useState([]); // Initialize state for exercise data
 
 //     console.log(`http://${URL}:8000/api/exercise/getAll`);
-    
+
 //     useEffect(() => {
 //         // Function to fetch exercise data from API
 //         const fetchExerciseData = async () => {
 //             try {
 //                 const response = await fetch(`http://${URL}:8000/api/exercise/getAll/`); // Replace with your API endpoint
 //                 console.log('The response is',response);
-                
+
 //                 const data = await response.json();
 //                 console.log('The response data is',data);
 //                 setExerciseData(data); // Update state with fetched data
@@ -64,7 +64,7 @@
 //             <View style={styles.titleContainer}>
 //                 <Text style={styles.titleText}>מאגר תרגילים</Text>
 //             </View>
-               
+
 //             <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('addExercise')}>
 //                 <Text style={{ textAlign: 'center', color: 'white' }}>הוספת תרגיל למאגר</Text>
 //             </TouchableOpacity>
@@ -184,7 +184,7 @@ const exerciseData12 = [
 const ExerciseItem = ({ item }) => {
     const url = 'https://www.youtube.com/watch?v=' + item.videoUrl;
     console.log(url);
-    
+
     return (
         <View style={styles.exerciseItem}>
             {/* Display exercise content */}
@@ -201,19 +201,19 @@ const exerciseManager = () => {
     const URL = process.env.EXPO_PUBLIC_API_URL;
 
     const navigation = useNavigation();
-    const [exerciseData, setExerciseData] = useState(exerciseData12); // Initialize state for exercise data
+    const [exerciseData, setExerciseData] = useState([]); // Initialize state for exercise data
 
     console.log(`http://${URL}:8000/api/exercise/getAll`);
-    
+
     useEffect(() => {
         // Function to fetch exercise data from API
         const fetchExerciseData = async () => {
             try {
                 const response = await fetch(`http://${URL}:8000/api/exercise/getAll/`); // Replace with your API endpoint
-                console.log('The response is',response);
-                
+                console.log('The response is', response);
+
                 const data = await response.json();
-                console.log('The response data is',data);
+                console.log('The response data is', data);
                 setExerciseData(data); // Update state with fetched data
             } catch (error) {
                 console.error('Error fetching exercise data:', error);
@@ -221,7 +221,7 @@ const exerciseManager = () => {
         };
 
         // Call the function to fetch exercise data
-        //fetchExerciseData();
+        fetchExerciseData();
     }, []); // Empty dependency array ensures this runs only once on mount
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -246,7 +246,7 @@ const exerciseManager = () => {
             />
         </SafeAreaView>
 
-        
+
     );
 };
 
@@ -291,10 +291,10 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     videoClip: {
-        width: 300,
-        backgroundColor: 'lightgray',
+        width: '100%',
+        aspectRatio: 17 / 9,
+        backgroundColor: 'black',
         marginBottom: 5,
-        aspectRatio: 16 / 9,
     },
 });
 
