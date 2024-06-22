@@ -16,6 +16,9 @@ const buttonsPageTherapist = () => {
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('buildExercise')}>
         <Text style={styles.buttonText}>יצירת תרגול</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Summary', { patientId: 1})}>
+        <Text style={styles.buttonText}>סיכום</Text>
+      </TouchableOpacity>
     </View>
   );
 };

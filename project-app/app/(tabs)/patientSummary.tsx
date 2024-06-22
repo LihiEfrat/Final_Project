@@ -21,7 +21,7 @@ interface SummaryData {
   exercises: Exercise[];
 }
 
-const Summary = () => {
+const patientSummary = () => {
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -148,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Summary;
+export default patientSummary;

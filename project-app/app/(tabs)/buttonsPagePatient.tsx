@@ -1,15 +1,19 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
 const buttonsPagePatient = () => {
+
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>טיפול חדש</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('patientSummary', { patientId: 1})}>
         <Text style={styles.buttonText}>התוכנית שלי</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>
