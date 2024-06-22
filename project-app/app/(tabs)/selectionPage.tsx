@@ -20,8 +20,6 @@ const Stack = createStackNavigator();
 const { width } = Dimensions.get('window');
 
 export default function SelectRegister() {
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
-
   return (
     <Stack.Navigator initialRouteName="UserTypeSelection">
       <Stack.Screen name="UserTypeSelection" options={{ headerTitle: '' }}>
@@ -31,33 +29,21 @@ export default function SelectRegister() {
               source={require('./logo.jpg')}
               style={styles.logo}
             />
-            <Text style={styles.heading}>רישום לאפליקציה</Text>
+            <Text style={styles.heading}>רישום לאפליקציה בתור</Text>
             <View style={styles.optionContainer}>
               <TouchableOpacity
-                onPress={() => setSelectedOption(1)}
-                style={[styles.button, selectedOption === 1 && styles.selectedButton]}
+                onPress={() => navigation.navigate('PatientRegistration')}
+                style={styles.button}
               >
-                <Text style={[styles.buttonText, selectedOption === 1 && styles.selectedButtonText]}>מטופל</Text>
+                <Text style={styles.buttonText}>מטופל</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setSelectedOption(2)}
-                style={[styles.button, selectedOption === 2 && styles.selectedButton]}
+                onPress={() => navigation.navigate('TherapistRegistration')}
+                style={styles.button}
               >
-                <Text style={[styles.buttonText, selectedOption === 2 && styles.selectedButtonText]}>מטפל</Text>
+                <Text style={styles.buttonText}>מטפל</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                if (selectedOption === 1) {
-                  navigation.navigate('PatientRegistration');
-                } else if (selectedOption === 2) {
-                  navigation.navigate('TherapistRegistration');
-                }
-              }}
-              style={styles.registerButton}
-            >
-              <Text style={styles.buttonText}>רישום</Text>
-            </TouchableOpacity>
           </View>
         )}
       </Stack.Screen>
@@ -98,16 +84,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     borderRadius: 5,
   },
-  selectedButton: {
-    backgroundColor: '#42B8D5',
-  },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     textAlign: 'center',
-  },
-  selectedButtonText: {
-    fontWeight: 'bold',
   },
   registerButton: {
     backgroundColor: '#42B8D5',
