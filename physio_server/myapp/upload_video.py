@@ -43,7 +43,7 @@ def upload_video(youtube, file, title, description, category, tags):
             "categoryId": category
         },
         "status": {
-            "privacyStatus": "private"
+            "privacyStatus": "public"
         }
     }
 
