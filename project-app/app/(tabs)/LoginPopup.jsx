@@ -46,7 +46,7 @@ const LoginPopup = ({ onClose }) => {
         <Text style={styles.title}>התחברות</Text>
         <TextInput
           style={styles.input}
-          placeholder="שם משתמש"
+          placeholder="כתובת אימייל"
           value={username}
           onChangeText={setUsername}
         />
