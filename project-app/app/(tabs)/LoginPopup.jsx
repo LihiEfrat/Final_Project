@@ -95,14 +95,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   mainButton: {
-    backgroundColor: '#4F8EF7',
+    backgroundColor: '#42B8D5',
     paddingVertical: 15,
     paddingHorizontal: 60,
     borderRadius: 5,
     marginBottom: 10,
   },
   secondaryButton: {
-    backgroundColor: '#4F8EF7',
+    backgroundColor: '#42B8D5',
     paddingVertical: 15,
     paddingHorizontal: 60,
     borderRadius: 5,

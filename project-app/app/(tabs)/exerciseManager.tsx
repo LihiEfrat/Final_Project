@@ -61,8 +61,6 @@ const exerciseManager = () => {
     return (
         <SafeAreaView style={{flex: 1, direction: 'rtl', backgroundColor:'white'}}>
             <AppHeader/>
-         
-
             <View style={styles.titleContainer}>
                 <Text style={styles.titleText}>מאגר תרגילים</Text>
             </View>
