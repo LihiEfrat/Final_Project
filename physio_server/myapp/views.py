@@ -161,11 +161,11 @@ def upload_video_view(request):
         file_url = default_storage.path(file_name)
         title = request.POST.get('title')
         description = request.POST.get('description')
-        category = "22"
+        category = request.POST.get('category')
         tags = request.POST.get('tags', [])
 
         try:
-            video_id = upload_video_to_youtube(file_url, title, description, category, tags)
+            video_id = upload_video_to_youtube(file_url, title, description, "22", tags)
     
             exercise = Exercise(
                 name=title,

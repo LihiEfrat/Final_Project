@@ -46,7 +46,7 @@ const LoginPopup = ({ onClose }) => {
         <Text style={styles.title}>התחברות</Text>
         <TextInput
           style={styles.input}
-          placeholder="שם משתמש"
+          placeholder="כתובת אימייל"
           value={username}
           onChangeText={setUsername}
         />
@@ -95,14 +95,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   mainButton: {
-    backgroundColor: '#4F8EF7',
+    backgroundColor: '#42B8D5',
     paddingVertical: 15,
     paddingHorizontal: 60,
     borderRadius: 5,
     marginBottom: 10,
   },
   secondaryButton: {
-    backgroundColor: '#4F8EF7',
+    backgroundColor: '#42B8D5',
     paddingVertical: 15,
     paddingHorizontal: 60,
     borderRadius: 5,
