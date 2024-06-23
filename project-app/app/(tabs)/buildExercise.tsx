@@ -45,13 +45,15 @@ const BuildEx = () => {
   return (
     <View style={styles.container}>
       <AppHeader />
+      {/* <View style={styles.rtl}> */}
       <AHeader />
       <Name programName={programName} setProgramName={setProgramName} patient={patientId} setPatientId={setPatientId} />
       <ExList setExerciseData={setExerciseData} />
       <TouchableOpacity style={styles.button} onPress={handleTrainingSave}>
         <Text style={styles.buttonText}>שמור</Text>
       </TouchableOpacity>
-    </View>
+      </View>
+    // </View>
   );
 };
 
@@ -60,8 +62,11 @@ export default BuildEx;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    direction: 'rtl',
     backgroundColor:'#ffff'
+  },
+  rtl:{
+    direction: 'rtl',
+
   },
   button: {
     alignItems: 'center',

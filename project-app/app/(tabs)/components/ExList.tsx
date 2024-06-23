@@ -172,6 +172,8 @@ const ExList = ({ setExerciseData, onSubmit }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    direction: 'rtl',
+
   },
   categoryList: {
     maxHeight: 40, 
