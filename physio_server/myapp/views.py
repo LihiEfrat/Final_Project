@@ -20,6 +20,7 @@ from django.core.files.storage import FileSystemStorage
 from .upload_video import upload_video_to_youtube
 from django.core.files.storage import default_storage
 import os
+from django.shortcuts import get_object_or_404
 
 
 class CustomLoginView(APIView):
@@ -84,6 +85,12 @@ class PatientRegistrationView(APIView):
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class PatientView(APIView):
+    def get(self, request):
+        patients = Patient.objects.all()
+        serializer = PatientSerializer(patients)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TherapistViewSet(viewsets.ModelViewSet):
@@ -101,15 +108,6 @@ class ProfessionalDetailsViewSet(viewsets.ModelViewSet):
 class PreferencesViewSet(viewsets.ModelViewSet):
     queryset = Preferences.objects.all()
     serializer_class = PreferencesSerializer
-
-# class TrainingView(APIView):
-#     def post(self, request):
-#         serializer = TrainingSerializer(data=request.data)
-#         if serializer.is_valid():
-#             training = serializer.save()
-#             return Response(TrainingSerializer(training).data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class TrainingView(APIView):
@@ -189,4 +187,107 @@ def upload_video_view(request):
        os.remove(file_url)
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)  
+# shows summery of the new training for a specific patient
 
+
+# @api_view(['GET'])
+# def get_patient_summary(request, patient_id):
+#     try:
+#         # Get the latest training for the patient
+#         training = Training.objects.filter(patient_id=patient_id).latest('id')
+        
+#         # Get the exercise plans for this training
+#         exercise_plans = ExercisePlan.objects.filter(training=training).select_related('exercise')
+        
+#         summary_data = {
+#             'patient_id': patient_id,
+#             'training_name': training.training_name,
+#             'exercises': []
+#         }
+        
+#         for plan in exercise_plans:
+#             exercise = Exercise.objects.get(Eid=plan.exercise_id)
+#             summary_data['exercises'].append({
+#                 'name': exercise.name,
+#                 'value': plan.value,
+#                 'videoUrl': exercise.videoUrl
+#             })
+        
+#         return Response(summary_data)
+#     except Training.DoesNotExist:
+#         return Response({'error': 'No training found for this patient'}, status=404)
+#     except Exception as e:
+#         return Response({'error': str(e)}, status=500)
+
+# @api_view(['GET'])
+# def get_patient_summary(request, patient_id):
+#     try:
+#         # Get the latest training for the patient
+#         training = Training.objects.filter(patient_id=patient_id).latest('id')
+#         return get_training_summary(request, training.id)
+#     except Training.DoesNotExist:
+#         return Response({'error': 'No training found for this patient'}, status=404)
+#     except Exception as e:
+#         return Response({'error': str(e)}, status=500)
+
+# @api_view(['GET'])
+# def get_training_summary(request, training_id):
+#     try:
+#         training = Training.objects.get(id=training_id)
+#         exercise_plans = ExercisePlan.objects.filter(training=training).select_related('exercise')
+        
+#         summary_data = {
+#             'patient_id': training.patient_id,
+#             'training_name': training.training_name,
+#             'exercises': []
+#         }
+        
+#         for plan in exercise_plans:
+#             exercise = Exercise.objects.get(Eid=plan.exercise_id)
+#             summary_data['exercises'].append({
+#                 'name': exercise.name,
+#                 'value': plan.value,
+#                 'videoUrl': exercise.videoUrl
+#             })
+        
+#         return Response(summary_data)
+#     except Training.DoesNotExist:
+#         return Response({'error': 'Training not found'}, status=404)
+#     except Exception as e:
+#         return Response({'error': str(e)}, status=500)
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+@api_view(['GET'])
+def get_patient_summary(request, patient_id):
+    logger.info(f"Fetching summary for patient ID: {patient_id}")
+    try:
+        patient = get_object_or_404(Patient, id=patient_id)
+        latest_training = Training.objects.filter(patient=patient).latest('id')
+        exercise_plans = ExercisePlan.objects.filter(training=latest_training)
+        
+        summary_data = {
+            'patient_id': patient_id,
+            'training_name': latest_training.training_name,
+            'exercises': []
+        }
+        
+        for plan in exercise_plans:
+            exercise = get_object_or_404(Exercise, Eid=plan.exercise_id)
+            summary_data['exercises'].append({
+                'name': exercise.name,
+                'value': plan.value,
+                'videoUrl': exercise.videoUrl,
+                'description':exercise.description
+            })
+        
+        logger.info(f"Returning summary data: {summary_data}")
+        return Response(summary_data)
+    except Training.DoesNotExist:
+        logger.warning(f"No training found for patient ID: {patient_id}")
+        return Response({'error': 'No exercise plan found for this patient'}, status=404)
+    except Patient.DoesNotExist:
+        logger.warning(f"Patient not found with ID: {patient_id}")
+        return Response({'error': 'Patient not found'}, status=404)

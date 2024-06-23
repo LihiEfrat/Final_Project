@@ -1,350 +1,133 @@
 
 
-// import React, { useState, useEffect } from 'react';
-// import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, Modal, Dimensions, Image } from 'react-native';
-// import { WebView } from 'react-native-webview';
 
-// const initialData = [
-//   {
-//     areaName: 'Back',
-//     exerciseOp: [
-//       { id:'1',name: 'fknc', imgUrl: 'https://picsum.photos/200/200', value: 0 ,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs'},
-//       {id:'2', name: 'dcjnds', imgUrl: 'https://picsum.photos/200/200', value: 0 ,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs'},
-//       {id:'3', name: 'dckmmnld', imgUrl: 'https://picsum.photos/200/300', value: 0,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs' },
-//       { id:'4',name: 'cdsl', imgUrl: 'https://picsum.photos/200/300', value: 0 ,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs'},
-//       { id:'5',name: 'cdk', imgUrl: 'https://picsum.photos/200/300', value: 0,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs' },
-//       { id:'6',name: 'cdscs', imgUrl: 'https://picsum.photos/200/300', value: 0,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs' },
-//       {id:'7', name: 'עילכג ', imgUrl: 'https://picsum.photos/200/300', value: 0,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs'},
-//       { id:'8',name: 'גגדדגגד', imgUrl: 'https://picsum.photos/200/300', value: 0,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs'},
-//     ],
-//   },
-//   {
-//     areaName: 'Legs',
-//     exerciseOp: [
-//       { id:'9',name: 'fknc', imgUrl: 'https://picsum.photos/200/200', value: 0,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs'},
-//       { id:'10',name: 'dcjnds', imgUrl: 'https://picsum.photos/200/200', value: 0,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs'},
-//       { id:'11',name: 'dckmmnld', imgUrl: 'https://picsum.photos/200/300', value: 0,vidUrl:'https://www.youtube.com/embed/xEv9c38IOvs' },
-//     ],
-//   },
-// ];
-
-// const URL = process.env.EXPO_PUBLIC_API_URL;
-
-// const ExList = ({ setExerciseData }) => {
-//   const [exerciseData, setExerciseDataState] = useState(initialData);
-//   const [selectedArea, setSelectedArea] = useState(initialData[0]);
-//   const [modalOpen, setModalOpen] = useState(false);
-//   const [selectedItem, setSelectedItem] = useState(null);
-//   // const [exercises, setExercises] = useState([]);
-//   const [selectedExercises, setSelectedExercises] = useState({});
-//   useEffect(() => {
-//     setExerciseData(exerciseData);
-//   }, [exerciseData]);
-
-//   const incrementVal = (areaIndex, exerciseIndex) => {
-//     const newData = [...exerciseData];
-//     newData[areaIndex].exerciseOp[exerciseIndex].value++;
-//     setExerciseDataState(newData);
-//   };
-
-//   const decrementVal = (areaIndex, exerciseIndex) => {
-//     const newData = [...exerciseData];
-//     if (newData[areaIndex].exerciseOp[exerciseIndex].value > 0) {
-//       newData[areaIndex].exerciseOp[exerciseIndex].value--;
-//       setExerciseDataState(newData);
-//     }
-//   };
-//   // const handleValueChange = (exerciseId, value) => {
-//   //   setSelectedExercises(prevState => ({
-//   //     ...prevState,
-//   //     [exerciseId]: value
-//   //   }));
-//   // };
-
-//   useEffect(() => {
-//     const exerciseArray = Object.entries(selectedExercises).map(([id, value]) => ({ id, value }));
-//     setExerciseData(exerciseArray);
-//   }, [selectedExercises]);
-
-//   return (
-//     <View style={styles.container}>
-//       <FlatList
-//         horizontal
-//         data={exerciseData}
-//         keyExtractor={(item) => item.areaName}
-//         renderItem={({ item }) => (
-//           <TouchableOpacity
-//             style={styles.areaButton}
-//             onPress={() => setSelectedArea(item)}
-//           >
-//             <Text style={styles.areaText}>{item.areaName}</Text>
-//           </TouchableOpacity>
-//         )}
-//         showsHorizontalScrollIndicator={false}
-//       />
-//       <View style={styles.filter}>
-//         <Text>מיין לפי</Text>
-//       </View>
-//       <FlatList
-//         data={selectedArea.exerciseOp}
-//         numColumns={2}
-//         columnWrapperStyle={styles.cls}
-//         contentContainerStyle={styles.ccs}
-//         keyExtractor={(item, idx) => item.name + idx}
-//         showsVerticalScrollIndicator={false}
-//         renderItem={({ item, index }) => {
-//           const areaIndex = exerciseData.findIndex(
-//             (area) => area.areaName === selectedArea.areaName
-//           );
-//           return (
-//             <TouchableOpacity
-//               style={styles.to}
-//               onPress={() => {
-//                 setSelectedItem(item);
-//                 setModalOpen(true);
-//               }}
-//             >
-//               <Image source={{ uri: item.imgUrl }} style={styles.pict} />
-//               <Text style={styles.itemName}>{item.name}</Text>
-//               <View style={styles.buttons}>
-//                 <Button onPress={() => incrementVal(areaIndex, index)} title="+" />
-//                 <Text style={styles.count}>{item.value}</Text>
-//                 <Button onPress={() => decrementVal(areaIndex, index)} title="-" />
-//               </View>
-//             </TouchableOpacity>
-//           );
-//         }}
-//       />
-      
-//         <Modal
-//         visible={modalOpen}
-//         transparent={true}
-//         animationType="slide"
-//         onRequestClose={() => setModalOpen(false)}
-//       >
-//         <View style={styles.modalBackground}>
-//           <View style={styles.modalContainer}>
-//             {selectedItem && (
-//               <>
-//                 {/* Use WebView to display the YouTube video */}
-//                 <WebView
-//                   style={styles.webview}
-//                   source={{ uri: selectedItem.vidUrl }}
-//                   allowsFullscreenVideo={true}
-//                 />
-//                 <Text style={styles.modalText}>שם התרגיל: {selectedItem.name}</Text>
-//                 <Text style={styles.modalText}>מספר התרגיל: {selectedItem.id}</Text>
-//                 <Text style={styles.modalText}>מספר חזרות: {selectedItem.value}</Text>
-//                 <Button title="סגור" onPress={() => setModalOpen(false)} />
-//               </>
-//             )}
-//           </View>
-//         </View>
-//       </Modal>
-//     </View>
-//   );
-// };
-
-// export default ExList;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     marginTop: 10,
-//     direction: 'rtl',
-//   },
-//   areaButton: {
-//     display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#C2E4ED',
-//     flexDirection: 'row',
-//     height: 50,
-//     width: 100,
-//     borderRadius: 20,
-//     marginHorizontal: 10,
-//     marginBottom: 10,
-//   },
-//   areaText: {
-//     textAlign: 'center',
-//   },
-//   cls: {
-//     gap: 10,
-//     paddingHorizontal: 12,
-//   },
-//   ccs: {
-//     gap: 10,
-//     paddingBottom: 20,
-//   },
-//   to: {
-//     display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#C2E4ED',
-//     flex: 1,
-//     height: 200,
-//     borderRadius: 20,
-//     margin: 10,
-//   },
-//   buttons: {
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     padding: 6,
-//   },
-//   count: {
-//     padding: 4,
-//     margin: 5,
-//   },
-//   itemName: {
-//     color: '#000',
-//     paddingTop: 3,
-//   },
-//   pict: {
-//     height: 130,
-//     width: '100%',
-//     borderRadius: 10,
-//   },
-//   filter: {
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//     flexDirection: 'row',
-//     paddingHorizontal: 12,
-//     marginTop: 15,
-//   },
-//   modalBackground: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-//   },
-//   modalContainer: {
-//     width: '80%',
-//     backgroundColor: 'white',
-//     borderRadius: 20,
-//     padding: 20,
-//     alignItems: 'center',
-//   },
-//   modalImage: {
-//     width: 150,
-//     height: 150,
-//     borderRadius: 10,
-//     marginBottom: 20,
-//   },
-//   modalText: {
-//     fontSize: 18,
-//     marginBottom: 20,
-//   },
-//   webview: {
-//     width: 150,
-//     height: 200,
-//     marginBottom: 20,
-//   },
-// });
-
-
-//new gpt 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, Modal, Dimensions, Image } from 'react-native';
-import { WebView } from 'react-native-webview';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, Modal, Image, ScrollView } from 'react-native';
+import YouTubePlayer from '../YouTubePlayer';
+import axios from 'axios';
 
-const initialData = [
-  {
-    areaName: 'Back',
-    exerciseOp: [
-      { id: 1, name: 'fknc', imgUrl: 'https://picsum.photos/200/200', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-      { id: 2, name: 'dcjnds', imgUrl: 'https://picsum.photos/200/200', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-      { id: 3, name: 'dckmmnld', imgUrl: 'https://picsum.photos/200/300', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-      { id: 4, name: 'cdsl', imgUrl: 'https://picsum.photos/200/300', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-      { id: 5, name: 'cdk', imgUrl: 'https://picsum.photos/200/300', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-      { id: 6, name: 'cdscs', imgUrl: 'https://picsum.photos/200/300', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-      { id: 7, name: 'עילכג ', imgUrl: 'https://picsum.photos/200/300', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-      { id: 8, name: 'גגדדגגד', imgUrl: 'https://picsum.photos/200/300', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-    ],
-  },
-  {
-    areaName: 'Legs',
-    exerciseOp: [
-      { id: 9, name: 'fknc', imgUrl: 'https://picsum.photos/200/200', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-      { id: 10, name: 'dcjnds', imgUrl: 'https://picsum.photos/200/200', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-      { id: 11, name: 'dckmmnld', imgUrl: 'https://picsum.photos/200/300', value: 0, vidUrl: 'https://www.youtube.com/embed/xEv9c38IOvs' },
-    ],
-  },
-];
-
-const ExList = ({ setExerciseData }) => {
-  const [exerciseData, setExerciseDataState] = useState(initialData);
-  const [selectedArea, setSelectedArea] = useState(initialData[0]);
+const ExList = ({ setExerciseData, onSubmit }) => {
+  const [allExercises, setAllExercises] = useState([]);
+  const [filteredExercises, setFilteredExercises] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [exerciseValues, setExerciseValues] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
+  const [summaryModalOpen, setSummaryModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  useEffect(() => {
-    const exercises = exerciseData.flatMap(area => area.exerciseOp.filter(ex => ex.value > 0));
-    setExerciseData(exercises);
-  }, [exerciseData]);
+  const URL = process.env.EXPO_PUBLIC_API_URL;
 
-  const incrementVal = (areaIndex, exerciseIndex) => {
-    const newData = [...exerciseData];
-    newData[areaIndex].exerciseOp[exerciseIndex].value++;
-    setExerciseDataState(newData);
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        const response = await axios.get(`http://${URL}:8000/api/exercise/getAll/`);
+        setAllExercises(response.data);
+        setFilteredExercises(response.data);
+        
+        const uniqueCategories = [...new Set(response.data.map(item => item.category))];
+        setCategories(uniqueCategories);
+      } catch (error) {
+        console.error('Error fetching exercise data:', error);
+      }
+    };
+
+    fetchExercises();
+  }, []);
+
+  useEffect(() => {
+    const exercisePlan = Object.entries(exerciseValues).map(([id, value]) => ({
+      exercise_id: id,
+      value: value
+    }));
+    setExerciseData(exercisePlan);
+  }, [exerciseValues, setExerciseData]);
+
+  const handleValueChange = (exerciseId, value) => {
+    setExerciseValues(prev => ({
+      ...prev,
+      [exerciseId]: value
+    }));
   };
 
-  const decrementVal = (areaIndex, exerciseIndex) => {
-    const newData = [...exerciseData];
-    if (newData[areaIndex].exerciseOp[exerciseIndex].value > 0) {
-      newData[areaIndex].exerciseOp[exerciseIndex].value--;
-      setExerciseDataState(newData);
+  const filterExercises = (category) => {
+    setSelectedCategory(category);
+    if (category) {
+      setFilteredExercises(allExercises.filter(exercise => exercise.category === category));
+    } else {
+      setFilteredExercises(allExercises);
     }
+  };
+
+  const ExerciseItem = ({ item }) => {
+    const value = exerciseValues[item.Eid] || 0;
+
+    return (
+      <View style={styles.exerciseItem}>
+        <TouchableOpacity
+          style={styles.to}
+          onPress={() => {
+            setSelectedItem(item);
+            setModalOpen(true);
+          }}
+        >
+          {/* <Image source={{ uri: item.imgUrl }} style={styles.exerciseImage} /> */}
+          <Text style={styles.exerciseName}>{item.name}</Text>
+        </TouchableOpacity>
+        <View style={styles.buttons}>
+          <Button onPress={() => handleValueChange(item.Eid, Math.max(0, value - 1))} title="-" />
+          <Text style={styles.count}>{value}</Text>
+          <Button onPress={() => handleValueChange(item.Eid, value + 1)} title="+" />
+        </View>
+      </View>
+    );
+  };
+
+  const renderSummary = () => {
+    const selectedExercises = allExercises.filter(ex => exerciseValues[ex.Eid] > 0);
+    return (
+      <ScrollView>
+        {selectedExercises.map(ex => (
+          <View key={ex.Eid} style={styles.summaryItem}>
+            <Text>{ex.name}</Text>
+            <Text>מספר חזרות: {exerciseValues[ex.Eid]}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    );
   };
 
   return (
     <View style={styles.container}>
       <FlatList
         horizontal
-        data={exerciseData}
-        keyExtractor={(item) => item.areaName}
+        data={['All', ...categories]}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles.areaButton}
-            onPress={() => setSelectedArea(item)}
+            style={[
+              styles.categoryButton,
+              selectedCategory === item && styles.selectedCategory
+            ]}
+            onPress={() => filterExercises(item === 'All' ? null : item)}
           >
-            <Text style={styles.areaText}>{item.areaName}</Text>
+            <Text style={styles.categoryButtonText}>{item}</Text>
           </TouchableOpacity>
         )}
+        keyExtractor={(item) => item}
         showsHorizontalScrollIndicator={false}
+        style={styles.categoryList}
       />
-      <View style={styles.filter}>
-        <Text>מיין לפי</Text>
-      </View>
       <FlatList
-        data={selectedArea.exerciseOp}
+        data={filteredExercises}
+        renderItem={({ item }) => <ExerciseItem item={item} />}
+        keyExtractor={item => item.Eid.toString()}
         numColumns={2}
         columnWrapperStyle={styles.cls}
         contentContainerStyle={styles.ccs}
-        keyExtractor={(item, idx) => item.name + idx}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item, index }) => {
-          const areaIndex = exerciseData.findIndex(
-            (area) => area.areaName === selectedArea.areaName
-          );
-          return (
-            <TouchableOpacity
-              style={styles.to}
-              onPress={() => {
-                setSelectedItem(item);
-                setModalOpen(true);
-              }}
-            >
-              <Image source={{ uri: item.imgUrl }} style={styles.pict} />
-              <Text style={styles.itemName}>{item.name}</Text>
-              <View style={styles.buttons}>
-                <Button onPress={() => incrementVal(areaIndex, index)} title="+" />
-                <Text style={styles.count}>{item.value}</Text>
-                <Button onPress={() => decrementVal(areaIndex, index)} title="-" />
-              </View>
-            </TouchableOpacity>
-          );
-        }}
+        extraData={exerciseValues}
       />
+      <Button title="סיכום תרגול" onPress={() => setSummaryModalOpen(true)} />
       <Modal
         visible={modalOpen}
         transparent={true}
@@ -355,17 +138,30 @@ const ExList = ({ setExerciseData }) => {
           <View style={styles.modalContainer}>
             {selectedItem && (
               <>
-                <WebView
-                  style={styles.webview}
-                  source={{ uri: selectedItem.vidUrl }}
-                  allowsFullscreenVideo={true}
-                />
+              <View style={styles.videoClip}>
+              <YouTubePlayer videoUrl={'https://www.youtube.com/watch?v=' +selectedItem.videoUrl} />
+                </View>             
                 <Text style={styles.modalText}>שם התרגיל: {selectedItem.name}</Text>
-                <Text style={styles.modalText}>מספר התרגיל: {selectedItem.id}</Text>
-                <Text style={styles.modalText}>מספר חזרות: {selectedItem.value}</Text>
+                <Text style={styles.modalText}>תאור: {selectedItem.description}</Text>
+                <Text style={styles.modalText}>מספר חזרות: {exerciseValues[selectedItem.Eid] || 0}</Text>
                 <Button title="סגור" onPress={() => setModalOpen(false)} />
               </>
             )}
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        visible={summaryModalOpen}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setSummaryModalOpen(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>סיכום תרגול</Text>
+            {renderSummary()}
+            
+            <Button title="חזור לערוך" onPress={() => setSummaryModalOpen(false)} />
           </View>
         </View>
       </Modal>
@@ -373,83 +169,97 @@ const ExList = ({ setExerciseData }) => {
   );
 };
 
-export default ExList;
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 10,
-    direction: 'rtl',
   },
-  areaButton: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#C2E4ED',
-    flexDirection: 'row',
-    height: 50,
-    width: 100,
-    borderRadius: 20,
-    marginHorizontal: 10,
-    marginBottom: 10,
+  categoryList: {
+    maxHeight: 40, 
   },
-  areaText: {
-    textAlign: 'center',
-  },
-  cls: {
-    gap: 10,
+  categoryButton: {
     paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginHorizontal: 4,
+    borderRadius: 15,
+    backgroundColor: '#C2E4ED',
+    justifyContent: 'center', 
   },
-  ccs: {
-    gap: 10,
-    paddingBottom: 20,
+  selectedCategory: {
+    backgroundColor: '#42B8D5',
+  },
+  categoryButtonText: {
+    color: 'black',
+    fontSize: 16, 
+  },
+  exerciseItem: {
+    flex: 1,
+    margin: 5,
+    padding: 10,
+    backgroundColor: '#C2E4ED',
+    borderRadius: 10,
+    alignItems: 'center',
   },
   to: {
-    display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#C2E4ED',
-    flex: 1,
-    height: 200,
-    borderRadius: 20,
-    margin: 10,
+  },
+  exerciseImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+  },
+  exerciseName: {
+    marginTop: 5,
+    textAlign: 'center',
   },
   buttons: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    padding: 6,
+    alignItems: 'center',
+    marginTop: 10,
   },
   count: {
-    padding: 4,
-    margin: 5,
+    marginHorizontal: 10,
   },
-  itemName: {
-    color: '#000',
-    paddingTop: 3,
-  },
-  pict: {
-    height: 130,
-    width: '100%',
-    borderRadius: 10,
-  },
-  filter: {
+  cls: {
     justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-    marginTop: 15,
+  },
+  ccs: {
+    padding: 10,
   },
   modalBackground: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContainer: {
-    width: '80%',
+    width: '90%',
     backgroundColor: 'white',
     borderRadius: 20,
-   
-  }
+    padding: 20,
+    alignItems: 'center',
+    maxHeight: '80%',
+  },
+  modalText: {
+    marginVertical: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  summaryItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  videoClip: {
+          width: '100%',
+          height: 200, 
+          marginBottom: 10,
+        },
 });
+
+export default ExList;

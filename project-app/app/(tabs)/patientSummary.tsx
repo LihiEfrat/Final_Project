@@ -21,7 +21,7 @@ interface SummaryData {
   exercises: Exercise[];
 }
 
-const Summary = () => {
+const patientSummary = () => {
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -66,8 +66,7 @@ const Summary = () => {
     <View style={styles.container}>
       <AppHeader />
       <View style={styles.righttl}>
-      <Text style={styles.title}>סיכום תרגול</Text>
-      <Text style={styles.programName}>מטופל: {summaryData.patient_id}</Text>
+      <Text style={styles.title}>התוכנית שלי</Text>
       <Text style={styles.programName}>שם תוכנית: {summaryData.training_name}</Text>
       </View>
       <FlatList
@@ -148,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Summary;
+export default patientSummary;

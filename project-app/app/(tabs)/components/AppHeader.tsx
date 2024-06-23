@@ -32,9 +32,7 @@ const styles = StyleSheet.create({
     paddingTop: 14,
      backgroundColor: '#ffff',
     flexDirection: 'row',
-    // alignItems: 'strech',
     justifyContent: 'space-between',
-    // paddingHorizontal: 10,
   },
   
   arrow: {

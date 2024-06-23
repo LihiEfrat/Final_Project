@@ -81,7 +81,7 @@ class TherapistSerializer(serializers.ModelSerializer):
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = '__all__'
+        fields = ['first_name']
 
 class ProfessionalDetailsSerializer(serializers.ModelSerializer):
     class Meta:
