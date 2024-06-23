@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -9,7 +9,7 @@ const buttonsPageTherapist = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
         <Ionicons name="arrow-back" size={35} color="black" />
       </TouchableOpacity>
@@ -27,7 +27,7 @@ const buttonsPageTherapist = () => {
         <Text style={styles.buttonText}>יצירת תרגול</Text>
       </TouchableOpacity>
     
-    </View>
+    </SafeAreaView>
   );
 };
 
