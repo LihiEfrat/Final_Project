@@ -1,8 +1,8 @@
 import React from 'react';
-
 import { useNavigation } from '@react-navigation/native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
 
 
 const { width } = Dimensions.get('window');
@@ -12,7 +12,10 @@ const buttonsPagePatient = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
+        <Ionicons name="arrow-back" size={35} color="black" />
+      </TouchableOpacity>
       <Image 
         source={require('./logo.jpg')}
         style={styles.logo}
@@ -29,7 +32,7 @@ const buttonsPagePatient = () => {
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>מאגר תרגולים</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

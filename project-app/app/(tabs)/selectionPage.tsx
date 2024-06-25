@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import RegisterToAppTherapist from './therapistRegister';
 import RegisterToAppPatient from './patientRegistration';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
 
 const PatientRegistration = () => (
   <View style={styles.container}>
@@ -24,12 +26,17 @@ export default function SelectRegister() {
     <Stack.Navigator initialRouteName="UserTypeSelection">
       <Stack.Screen name="UserTypeSelection" options={{ headerTitle: '' }}>
         {({ navigation }) => (
-          <View style={styles.container}>
-            <Image 
+          <SafeAreaView style={styles.container}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
+              <Ionicons name="arrow-back" size={35} color="black" />
+            </TouchableOpacity>
+            <Image
               source={require('./logo.jpg')}
               style={styles.logo}
             />
-            <Text style={styles.heading}>רישום לאפליקציה בתור</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.titleText}>רישום לאפליקציה בתור</Text>
+            </View>
             <View style={styles.optionContainer}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('PatientRegistration')}
@@ -44,7 +51,7 @@ export default function SelectRegister() {
                 <Text style={styles.buttonText}>מטפל</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </SafeAreaView>
         )}
       </Stack.Screen>
       <Stack.Screen name="PatientRegistration" component={PatientRegistration} options={{ headerTitle: '' }} />
@@ -61,16 +68,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   logo: {
-    width: 250, 
-    height: 100, 
-    marginBottom: 20, 
+    width: 250,
+    height: 93,
+    marginBottom: 20,
     marginTop: -400
+  },
+  titleContainer: {
+    width: '110%',
+    backgroundColor: '#42B8D5',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    marginBottom: 40,
+  },
+  titleText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  arrow: {
+    position: 'absolute',
+    top: 40, 
+    left: 20,
+    paddingTop: 30,   
   },
   heading: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    marginTop: 50, 
+    marginTop: 50,
   },
   optionContainer: {
     flexDirection: 'row',
