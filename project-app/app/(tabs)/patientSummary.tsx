@@ -41,7 +41,7 @@ const patientSummary = () => {
         setSummaryData(response.data);
       } catch (error) {
         console.error('Error fetching summary data:', error.response ? error.response.data : error.message);
-        setError('Failed to load summary data. Please try again.');
+        setError('לא קיימת תוכנית אימון אנא קבע פגישה חדשה');
       } finally {
         setLoading(false);
       }

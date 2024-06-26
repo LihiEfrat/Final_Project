@@ -71,7 +71,7 @@ const ExList = ({ setExerciseData, onSubmit }) => {
             setModalOpen(true);
           }}
         >
-          {/* <Image source={{ uri: item.imgUrl }} style={styles.exerciseImage} /> */}
+          <Image source={ require('../exLogo.png')} style={styles.exerciseImage} />
           <Text style={styles.exerciseName}>{item.name}</Text>
         </TouchableOpacity>
         <View style={styles.buttons}>
