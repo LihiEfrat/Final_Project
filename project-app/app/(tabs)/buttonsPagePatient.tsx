@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, SafeAreaView, Linking, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 
@@ -10,6 +10,11 @@ const { width } = Dimensions.get('window');
 const buttonsPagePatient = () => {
 
   const navigation = useNavigation();
+
+  const openWhatsApp = () => {
+    const url = 'https://wa.me/972544204540';
+    Linking.openURL(url).catch((err) => Alert.alert('Error', 'Failed to open whatsapp: ' + err));
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,6 +36,13 @@ const buttonsPagePatient = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>מאגר תרגולים</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={openWhatsApp} style={styles.whatsappButton}>
+        <Image 
+          source={require('./download.png')} 
+          style={styles.image} 
+          alt="Chat on WhatsApp"
+        />
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -83,6 +95,16 @@ const styles = StyleSheet.create({
     top: 40, 
     left: 20,
     paddingTop: 30,   
+  },
+  whatsappButton: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20, 
+  },
+  image: {
+    width: 75,
+    height: 75,
+    resizeMode: 'contain',
   },
 });
 

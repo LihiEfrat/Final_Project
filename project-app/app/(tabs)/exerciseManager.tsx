@@ -40,6 +40,11 @@ const exerciseManager = () => {
 
     console.log(`http://${URL}:8000/api/exercise/getAll`);
 
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [filteredExercises, setFilteredExercises] = useState([]);
+    
+
     useEffect(() => {
         // Function to fetch exercise data from API
         const fetchExerciseData = async () => {
@@ -50,6 +55,12 @@ const exerciseManager = () => {
                 const data = await response.json();
                 console.log('The response data is', data);
                 setExerciseData(data); // Update state with fetched data
+                setFilteredExercises(data);
+
+                // Extract unique categories
+                const uniqueCategories = [...new Set(data.map(item => item.category))];
+                setCategories(uniqueCategories);
+
             } catch (error) {
                 console.error('Error fetching exercise data:', error);
             }
@@ -58,6 +69,16 @@ const exerciseManager = () => {
         // Call the function to fetch exercise data
         fetchExerciseData();
     }, []); // Empty dependency array ensures this runs only once on mount
+
+    const filterExercises = (category) => {
+        setSelectedCategory(category);
+        if (category) {
+            setFilteredExercises(exerciseData.filter(exercise => exercise.category === category));
+        } else {
+            setFilteredExercises(exerciseData);
+        }
+    };
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <AppHeader />
@@ -69,16 +90,38 @@ const exerciseManager = () => {
             </TouchableOpacity>
 
             <FlatList
-                data={exerciseData}
+                data={filteredExercises}
                 contentContainerStyle={{ paddingHorizontal: 10 }}
                 renderItem={({ item }) => <ExerciseItem item={item} />}
                 keyExtractor={item => item.id}
                 ListHeaderComponent={() => (
+                    <>
                     <View style={styles.sectionTitle}>
                         <Text style={styles.sectionTitleText}>כל התרגילים</Text>
                     </View>
+                    <FlatList
+                        horizontal
+                        data={['All', ...categories]}
+                        renderItem={({ item }) => (
+                        <TouchableOpacity
+                            style={[
+                            styles.categoryButton,
+                            selectedCategory === item && styles.selectedCategory
+                            ]}
+                            onPress={() => filterExercises(item === 'All' ? null : item)}
+                        >
+                            <Text style={styles.categoryButtonText}>{item}</Text>
+                        </TouchableOpacity>
+                        )}
+                        keyExtractor={(item) => item}
+                        showsHorizontalScrollIndicator={false}
+                        style={styles.categoryList}
+                    />
+                    </>
                 )}
-            />
+                />
+
+            
         </SafeAreaView>
 
 
@@ -131,6 +174,28 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         marginBottom: 5,
     },
+
+    categoryList: {
+        maxHeight: 60,  
+        marginVertical: 15,  
+      },
+      categoryButton: {
+        paddingHorizontal: 20,  
+        paddingVertical: 12,  
+        marginHorizontal: 8, 
+        borderRadius: 15,  
+        backgroundColor: '#C2E4ED',
+        justifyContent: 'center',
+        alignItems: 'center', 
+        minWidth: 100,
+        flexShrink: 0,  
+        height: 40,  
+      },
+      categoryButtonText: {
+        color: 'black',
+        fontSize: 16,  
+        fontWeight: '100',  
+      },
 });
 
 

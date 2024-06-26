@@ -50,11 +50,13 @@ export default function RegisterToAppPatient() {
             interested_in_calendar_sync: interestedInCalendarSync
         }));
 
-        axios.post(`http://${URL}:8000/api/register/patient/`, formData, {
+        fetch(`http://${URL}:8000/api/register/patient/`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }
-        })
+            },
+            body: formData
+            })
             .then(response => {
                 console.log(response.data);
                 navigation.navigate('buttonsPagePatient');
