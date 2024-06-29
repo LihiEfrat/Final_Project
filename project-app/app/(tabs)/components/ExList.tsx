@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, Modal, Image, ScrollView } from 'react-native';
 import YouTubePlayer from '../YouTubePlayer';
 import axios from 'axios';
-import {getRandomImage} from './imageLibrary';
 
 
 
@@ -22,15 +21,15 @@ const ExList = ({ setExerciseData, onSubmit }) => {
   const URL = process.env.EXPO_PUBLIC_API_URL;
 
   const imageLibrary = [
-    require('../project-app/app/(tabs)/pictures/1.png'),
-    require('../project-app/app/(tabs)/pictures/2.png'),
-    require('../project-app/app/(tabs)/pictures/3.png'),
-    require('../project-app/app/(tabs)/pictures/4.png'),
-    require('../project-app/app/(tabs)/pictures/5.png'),
-    require('../project-app/app/(tabs)/pictures/6.png'),
-    require('../project-app/app/(tabs)/pictures/7.png'),
-    require('../project-app/app/(tabs)/pictures/8.png'),
-    require('../project-app/app/(tabs)/pictures/9.png'),
+    require('../pictures/1.png'),
+    require('../pictures/2.png'),
+    require('../pictures/3.png'),
+    require('../pictures/4.png'),
+    require('../pictures/5.png'),
+    require('../pictures/6.png'),
+    require('../pictures/7.png'),
+    require('../pictures/8.png'),
+    require('../pictures/9.png'),
 
     // Add more images as needed
   ];
