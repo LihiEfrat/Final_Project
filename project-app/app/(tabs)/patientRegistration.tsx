@@ -58,8 +58,16 @@ export default function RegisterToAppPatient() {
             body: formData
             })
             .then(response => {
-                console.log(response.data);
-                navigation.navigate('buttonsPagePatient');
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData);
+                    });
+                }
+                return response.json();
+            })
+            .then(response => {
+                console.log(response);
+                navigation.navigate('buttonsPagePatient', { userEmail: response.email });
             })
             .catch(error => {
                 console.error('There was an error making the request:', error);
