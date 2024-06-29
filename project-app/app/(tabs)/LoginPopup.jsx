@@ -20,6 +20,7 @@ const LoginPopup = ({ onClose }) => {
       password: password
     })
     .then(response => {
+      const requestData = JSON.parse(response.config.data);
       // Handle the successful login response
       const isTherapist = response.data.is_therapist;
       if (isTherapist) {
@@ -29,7 +30,7 @@ const LoginPopup = ({ onClose }) => {
       } else {
         // Navigate to patient screen
         console.log('Logged in as a patient');
-        navigation.navigate('buttonsPagePatient');
+        navigation.navigate('buttonsPagePatient', { userEmail: requestData.email });
       }
       onClose(); // Close the popup after login
     })
