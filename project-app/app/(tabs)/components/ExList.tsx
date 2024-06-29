@@ -5,6 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, Modal, Image, ScrollView } from 'react-native';
 import YouTubePlayer from '../YouTubePlayer';
 import axios from 'axios';
+import {getRandomImage} from './imageLibrary';
+
+
 
 const ExList = ({ setExerciseData, onSubmit }) => {
   const [allExercises, setAllExercises] = useState([]);
@@ -18,6 +21,23 @@ const ExList = ({ setExerciseData, onSubmit }) => {
 
   const URL = process.env.EXPO_PUBLIC_API_URL;
 
+  const imageLibrary = [
+    require('../project-app/app/(tabs)/pictures/1.png'),
+    require('../project-app/app/(tabs)/pictures/2.png'),
+    require('../project-app/app/(tabs)/pictures/3.png'),
+    require('../project-app/app/(tabs)/pictures/4.png'),
+    require('../project-app/app/(tabs)/pictures/5.png'),
+    require('../project-app/app/(tabs)/pictures/6.png'),
+    require('../project-app/app/(tabs)/pictures/7.png'),
+    require('../project-app/app/(tabs)/pictures/8.png'),
+    require('../project-app/app/(tabs)/pictures/9.png'),
+
+    // Add more images as needed
+  ];
+  const getRandomImage = () => {
+    const randomIndex = Math.floor(Math.random() * imageLibrary.length);
+    return imageLibrary[randomIndex];
+  };
   useEffect(() => {
     const fetchExercises = async () => {
       try {
@@ -71,7 +91,8 @@ const ExList = ({ setExerciseData, onSubmit }) => {
             setModalOpen(true);
           }}
         >
-          <Image source={ require('../exLogo.png')} style={styles.exerciseImage} />
+          {/* <Image source={ require('../exLogo.png')} style={styles.exerciseImage} /> */}
+          <Image source={getRandomImage()} style={styles.exerciseImage} />
           <Text style={styles.exerciseName}>{item.name}</Text>
         </TouchableOpacity>
         <View style={styles.buttons}>
