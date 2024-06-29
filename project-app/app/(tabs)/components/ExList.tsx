@@ -5,6 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, Modal, Image, ScrollView } from 'react-native';
 import YouTubePlayer from '../YouTubePlayer';
 import axios from 'axios';
+import {getRandomImage} from './imageLibrary';
+
+
 
 const ExList = ({ setExerciseData, onSubmit }) => {
   const [allExercises, setAllExercises] = useState([]);
@@ -71,7 +74,8 @@ const ExList = ({ setExerciseData, onSubmit }) => {
             setModalOpen(true);
           }}
         >
-          <Image source={ require('../exLogo.png')} style={styles.exerciseImage} />
+          {/* <Image source={ require('../exLogo.png')} style={styles.exerciseImage} /> */}
+          <Image source={getRandomImage(item.category.toLowerCase())} style={styles.exerciseImage} />
           <Text style={styles.exerciseName}>{item.name}</Text>
         </TouchableOpacity>
         <View style={styles.buttons}>
