@@ -21,6 +21,23 @@ const ExList = ({ setExerciseData, onSubmit }) => {
 
   const URL = process.env.EXPO_PUBLIC_API_URL;
 
+  const imageLibrary = [
+    require('../project-app/app/(tabs)/pictures/1.png'),
+    require('../project-app/app/(tabs)/pictures/2.png'),
+    require('../project-app/app/(tabs)/pictures/3.png'),
+    require('../project-app/app/(tabs)/pictures/4.png'),
+    require('../project-app/app/(tabs)/pictures/5.png'),
+    require('../project-app/app/(tabs)/pictures/6.png'),
+    require('../project-app/app/(tabs)/pictures/7.png'),
+    require('../project-app/app/(tabs)/pictures/8.png'),
+    require('../project-app/app/(tabs)/pictures/9.png'),
+
+    // Add more images as needed
+  ];
+  const getRandomImage = () => {
+    const randomIndex = Math.floor(Math.random() * imageLibrary.length);
+    return imageLibrary[randomIndex];
+  };
   useEffect(() => {
     const fetchExercises = async () => {
       try {
@@ -75,7 +92,7 @@ const ExList = ({ setExerciseData, onSubmit }) => {
           }}
         >
           {/* <Image source={ require('../exLogo.png')} style={styles.exerciseImage} /> */}
-          <Image source={getRandomImage(item.category.toLowerCase())} style={styles.exerciseImage} />
+          <Image source={getRandomImage()} style={styles.exerciseImage} />
           <Text style={styles.exerciseName}>{item.name}</Text>
         </TouchableOpacity>
         <View style={styles.buttons}>
