@@ -54,14 +54,8 @@ const buttonsPagePatient = () => {
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>דף בית מטופל</Text>
       </View>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>טיפול חדש</Text>
-      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('patientSummary', { patientId: patientId })}>
         <Text style={styles.buttonText}>התוכנית שלי</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>מאגר תרגולים</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={openWhatsApp} style={styles.whatsappButton}>
         <Image 

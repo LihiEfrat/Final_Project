@@ -25,16 +25,11 @@ const HomePage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.topButton}>
-        <Text style={styles.buttonText}>מעבר למערכת מטופלים</Text>
-      </TouchableOpacity>
-      
+    <View style={styles.container}> 
       <Image 
         source={require('./logo.jpg')}
         style={styles.logo}
       />
-      
       <TouchableOpacity style={styles.mainButton} onPress={handleMainButtonPress}>
         <Text style={styles.buttonText}>להתחברות</Text>
       </TouchableOpacity>
