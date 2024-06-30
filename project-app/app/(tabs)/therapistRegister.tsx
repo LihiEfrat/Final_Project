@@ -44,11 +44,10 @@ export default function RegisterToAppTherapist() {
             })
             .catch(error => {
     
-                // Extract and display error messages from the response
+                
                 if (error.response) {
                     const { data } = error.response;
                     if (data.errors) {
-                        // Display all errors returned from the backend
                         const errorMessages = Object.values(data.errors).flat().join('\n');
                         Alert.alert('Registration Error', errorMessages);
                     } else {

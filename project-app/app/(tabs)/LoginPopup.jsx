@@ -21,7 +21,6 @@ const LoginPopup = ({ onClose }) => {
     })
     .then(response => {
       const requestData = JSON.parse(response.config.data);
-      // Handle the successful login response
       const isTherapist = response.data.is_therapist;
       if (isTherapist) {
         // Navigate to therapist screen
@@ -32,12 +31,10 @@ const LoginPopup = ({ onClose }) => {
         console.log('Logged in as a patient');
         navigation.navigate('buttonsPagePatient', { userEmail: requestData.email });
       }
-      onClose(); // Close the popup after login
+      onClose(); 
     })
     .catch(error => {
-      // Handle the error response
       console.error('Login error:', error);
-      // Handle error, such as displaying an error message to the user
     });
   };
 

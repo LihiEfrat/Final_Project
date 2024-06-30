@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import axios from 'axios'; // Import Axios for making HTTP requests
+import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native'
 
@@ -30,7 +30,7 @@ const addExercise = () => {
         description: '',
         file: null, // Add file to state
         approval: false, 
-        // user: '', 
+        
     });
 
     const URL = process.env.EXPO_PUBLIC_API_URL;

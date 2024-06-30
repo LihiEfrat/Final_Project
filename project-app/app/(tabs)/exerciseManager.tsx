@@ -4,17 +4,15 @@ import { useNavigation } from '@react-navigation/native';
 import AppHeader from './components/AppHeader';
 import YouTubePlayer from './YouTubePlayer';
 
-// Exercise data
 const exerciseData12 = [
-    { id: '1', name: 'Exercise 1', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets' /* Other exercise data */ },
-    { id: '2', name: 'Exercise 2', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets' /* Other exercise data */ },
-    { id: '3', name: 'Exercise 3', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets' /* Other exercise data */ },
-    { id: '4', name: 'Exercise 4', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets' /* Other exercise data */ },
-    { id: '5', name: 'Exercise 5', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets' /* Other exercise data */ },
-    { id: '6', name: 'Exercise 6', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets' /* Other exercise data */ },
+    { id: '1', name: 'Exercise 1', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
+    { id: '2', name: 'Exercise 2', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
+    { id: '3', name: 'Exercise 3', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
+    { id: '4', name: 'Exercise 4', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
+    { id: '5', name: 'Exercise 5', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
+    { id: '6', name: 'Exercise 6', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
 ];
 
-// ExerciseItem component to render each exercise
 const ExerciseItem = ({ item }) => {
     const url = 'https://www.youtube.com/watch?v=' + item.videoUrl;
     console.log(url);
@@ -189,7 +187,7 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         minWidth: 100,
         flexShrink: 0,  
-        height: 60,  
+        height: 40,  
       },
       categoryButtonText: {
         color: 'black',
