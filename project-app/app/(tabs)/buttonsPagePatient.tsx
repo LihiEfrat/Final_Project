@@ -1,7 +1,8 @@
-import React from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useEffect,useState } from 'react';
+import { useNavigation, useRoute} from '@react-navigation/native';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, SafeAreaView, Linking, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 
 
@@ -11,8 +12,30 @@ const buttonsPagePatient = () => {
 
   const navigation = useNavigation();
   const route = useRoute();
-  const { userEmail } = route.params;
+  const { userEmail } = route.params || {};
+  const [patientId, setPatientId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const URL = process.env.EXPO_PUBLIC_API_URL;
+
+  useEffect(() => {
+    const fetchPatientId = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(`http://${URL}:8000/api/patient/get-id/`, {
+          params: { email: userEmail }
+        });
+        setPatientId(response.data.id);  // Changed from response.data.patient_id to response.data.id
+      } catch (error) {
+        console.error('Error fetching patient ID:', error);
+        Alert.alert('Error', 'Failed to fetch patient information');
+      } finally {
+        setIsLoading(false);
+      }
+    };
   
+    fetchPatientId();
+  }, [userEmail]);
 
   const openWhatsApp = () => {
     const url = 'https://wa.me/972544204540';
@@ -34,7 +57,7 @@ const buttonsPagePatient = () => {
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>טיפול חדש</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('patientSummary', { patientId: 1})}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('patientSummary', { patientId: patientId })}>
         <Text style={styles.buttonText}>התוכנית שלי</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>

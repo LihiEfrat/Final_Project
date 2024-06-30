@@ -164,6 +164,12 @@ class TrainingSerializer(serializers.ModelSerializer):
                 ExercisePlan.objects.create(training=training, exercise_id=exercise.Eid, value=value)
 
         return training
+    
+
+class PatientIdSerializer(serializers.ModelSerializer):
+    class Meta:
+            model = Patient
+            fields = ['id']
 
 
 

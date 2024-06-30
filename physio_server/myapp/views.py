@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Therapist, Patient, ProfessionalDetails, Preferences, Exercise,Training,ExercisePlan
-from .serializers import TherapistRegistrationSerializer,TherapistSerializer, PatientRegisterSerializer, PatientSerializer, ProfessionalDetailsSerializer, PreferencesSerializer, ExerciseSerializer,TrainingSerializer, ExercisePlanSerializer
+from .serializers import TherapistRegistrationSerializer,TherapistSerializer, PatientRegisterSerializer, PatientSerializer, ProfessionalDetailsSerializer, PreferencesSerializer, ExerciseSerializer,TrainingSerializer, ExercisePlanSerializer,PatientIdSerializer
 
 from django.contrib.auth.hashers import check_password
 
@@ -224,3 +224,13 @@ def get_patient_summary(request, patient_id):
     except Patient.DoesNotExist:
         logger.warning(f"Patient not found with ID: {patient_id}")
         return Response({'error': 'Patient not found'}, status=404)
+ #fatch patient defult id based on email    
+@api_view(['GET'])
+def get_patient_id(request):
+    email = request.query_params.get('email', None)
+    if email is None:
+        return Response({'error': 'Email parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    patient = get_object_or_404(Patient, email=email)
+    serializer = PatientIdSerializer(patient)
+    return Response(serializer.data)
