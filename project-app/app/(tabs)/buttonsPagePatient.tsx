@@ -12,7 +12,7 @@ const buttonsPagePatient = () => {
 
   const navigation = useNavigation();
   const route = useRoute();
-  const { userEmail } = route.params;
+  const { userEmail } = route.params || {};
   const [patientId, setPatientId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 

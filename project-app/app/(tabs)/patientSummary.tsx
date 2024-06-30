@@ -177,10 +177,11 @@ const PatientSummary = () => {
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const[pEmail,setEmail]=useState();
 
   const route = useRoute();
   const navigation = useNavigation();
-  const { patientId } = route.params;
+  const { patientId, userEmail } = route.params;
 
   useEffect(() => {
     const fetchSummaryData = async () => {
@@ -190,11 +191,12 @@ const PatientSummary = () => {
         console.log('Fetching from URL:', url);
         const response = await axios.get(url);
         console.log('Raw response data:', JSON.stringify(response.data, null, 2));
-
+        setEmail(userEmail) ;
+        console.log(pEmail);
         if (response.data.no_plan) {
           setError('אין לך תוכנית עדיין');
           setTimeout(() => {
-            navigation.navigate('buttonsPagePatient');
+            navigation.navigate('buttonsPagePatient', { userEmail: userEmail });
           }, 5000);
         } else {
           setSummaryData(response.data);
@@ -203,7 +205,7 @@ const PatientSummary = () => {
         console.error('Error fetching summary data:', error.response ? error.response.data : error.message);
         setError('לא קיימת תוכנית אימון אנא קבע פגישה חדשה');
         setTimeout(() => {
-          navigation.navigate('buttonsPagePatient');
+          navigation.navigate('buttonsPagePatient', { userEmail: userEmail });
         }, 5000);
       } finally {
         setLoading(false);
