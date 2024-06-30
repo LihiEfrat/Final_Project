@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         minWidth: 100,
         flexShrink: 0,  
-        height: 40,  
+        height: 60,  
       },
       categoryButtonText: {
         color: 'black',

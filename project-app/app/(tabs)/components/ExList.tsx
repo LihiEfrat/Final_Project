@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
 
   },
   categoryList: {
-    maxHeight: 40, 
+    maxHeight: 60, 
   },
   categoryButton: {
     paddingHorizontal: 12,
