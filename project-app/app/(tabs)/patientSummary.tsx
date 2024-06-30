@@ -90,6 +90,11 @@ const PatientSummary = () => {
 
     return (
         <View style={styles.container}>
+   
+          <AppHeader/>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
+        <Ionicons name="arrow-back" size={35} color="black" />
+      </TouchableOpacity>
           <View style={styles.righttl}>
           <Text style={styles.title}>התוכנית שלי</Text>
           <Text style={styles.programName}>שם תוכנית: {summaryData.training_name}</Text>
