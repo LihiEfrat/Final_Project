@@ -101,7 +101,7 @@ const exerciseManager = () => {
                     </View>
                     <FlatList
                         horizontal
-                        data={['All', ...categories]}
+                        data={['הכל', ...categories]}
                         renderItem={({ item }) => (
                         <TouchableOpacity
                             style={[
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
         margin: 20,
         backgroundColor: '#42B8D5',
         width: 180,
-        height: 50,
+        height: 60,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 8,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         minWidth: 100,
         flexShrink: 0,  
-        height: 40,  
+        height: 50,  
       },
       categoryButtonText: {
         color: 'black',

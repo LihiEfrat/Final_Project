@@ -155,7 +155,7 @@ const ExList = ({ setExerciseData, onSubmit }) => {
     <View style={styles.container}>
       <FlatList
         horizontal
-        data={['All', ...categories]}
+        data={['הכל', ...categories]}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
 
   },
   categoryList: {
-    maxHeight: 40, 
+    maxHeight: 60, 
   },
   categoryButton: {
     paddingHorizontal: 12,
