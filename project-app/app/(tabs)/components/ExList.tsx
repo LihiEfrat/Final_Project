@@ -17,6 +17,8 @@ const ExList = ({ setExerciseData, onSubmit }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [summaryModalOpen, setSummaryModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [exerciseImages, setExerciseImages] = useState({});
+
 
   const URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -46,13 +48,22 @@ const ExList = ({ setExerciseData, onSubmit }) => {
         
         const uniqueCategories = [...new Set(response.data.map(item => item.category))];
         setCategories(uniqueCategories);
+  
+        // Create a mapping of exercise IDs to random images
+        const imageMap = {};
+        response.data.forEach(exercise => {
+          imageMap[exercise.Eid] = getRandomImage();
+        });
+        setExerciseImages(imageMap);
       } catch (error) {
         console.error('Error fetching exercise data:', error);
       }
     };
-
+  
     fetchExercises();
   }, []);
+
+
 
   useEffect(() => {
     const exercisePlan = Object.entries(exerciseValues).map(([id, value]) => ({
@@ -78,9 +89,33 @@ const ExList = ({ setExerciseData, onSubmit }) => {
     }
   };
 
+  // const ExerciseItem = ({ item }) => {
+  //   const value = exerciseValues[item.Eid] || 0;
+
+  //   return (
+  //     <View style={styles.exerciseItem}>
+  //       <TouchableOpacity
+  //         style={styles.to}
+  //         onPress={() => {
+  //           setSelectedItem(item);
+  //           setModalOpen(true);
+  //         }}
+  //       >
+  //         {/* <Image source={ require('../exLogo.png')} style={styles.exerciseImage} /> */}
+  //         <Image source={getRandomImage()} style={styles.exerciseImage} />
+  //         <Text style={styles.exerciseName}>{item.name}</Text>
+  //       </TouchableOpacity>
+  //       <View style={styles.buttons}>
+  //         <Button onPress={() => handleValueChange(item.Eid, Math.max(0, value - 1))} title="-" />
+  //         <Text style={styles.count}>{value}</Text>
+  //         <Button onPress={() => handleValueChange(item.Eid, value + 1)} title="+" />
+  //       </View>
+  //     </View>
+  //   );
+  // };
   const ExerciseItem = ({ item }) => {
     const value = exerciseValues[item.Eid] || 0;
-
+  
     return (
       <View style={styles.exerciseItem}>
         <TouchableOpacity
@@ -90,8 +125,7 @@ const ExList = ({ setExerciseData, onSubmit }) => {
             setModalOpen(true);
           }}
         >
-          {/* <Image source={ require('../exLogo.png')} style={styles.exerciseImage} /> */}
-          <Image source={getRandomImage()} style={styles.exerciseImage} />
+          <Image source={exerciseImages[item.Eid]} style={styles.exerciseImage} />
           <Text style={styles.exerciseName}>{item.name}</Text>
         </TouchableOpacity>
         <View style={styles.buttons}>
