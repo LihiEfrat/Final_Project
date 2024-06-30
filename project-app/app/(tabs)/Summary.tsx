@@ -64,6 +64,7 @@ const Summary = () => {
 
   return (
     <View style={styles.container}>
+      
       <AppHeader />
       <View style={styles.righttl}>
       <Text style={styles.title}>סיכום תרגול</Text>
