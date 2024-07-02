@@ -11,7 +11,7 @@ const buttonsPageTherapist = () => {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
-        <Ionicons name="arrow-back" size={35} color="black" />
+        <Ionicons name="arrow-back" size={35} color="#1E98D7" />
       </TouchableOpacity>
       <Image 
         source={require('./logo.jpg')}

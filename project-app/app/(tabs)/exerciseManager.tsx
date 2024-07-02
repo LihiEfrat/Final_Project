@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, FlatList, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AppHeader from './components/AppHeader';
 import YouTubePlayer from './YouTubePlayer';
 
-/* 
-const exerciseData12 = [
-    { id: '1', name: 'Exercise 1', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
-    { id: '2', name: 'Exercise 2', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
-    { id: '3', name: 'Exercise 3', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
-    { id: '4', name: 'Exercise 4', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
-    { id: '5', name: 'Exercise 5', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
-    { id: '6', name: 'Exercise 6', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
-];
-*/ 
 
 const ExerciseItem = ({ item }) => {
     const url = 'https://www.youtube.com/watch?v=' + item.videoUrl;
@@ -39,38 +29,33 @@ const exerciseManager = () => {
     // Initialize state for exercise data
     const [exerciseData, setExerciseData] = useState([]); 
 
-    console.log(`http://${URL}:8000/api/exercise/getAll`);
-
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [filteredExercises, setFilteredExercises] = useState([]);
-    
 
-    useEffect(() => {
-        // Function to fetch exercise data from API
-        const fetchExerciseData = async () => {
+    useFocusEffect(
+        useCallback(() => {
+          const fetchExerciseData = async () => {
             try {
-                const response = await fetch(`http://${URL}:8000/api/exercise/getAll/`); 
-                console.log('The response is', response);
+              const response = await fetch(`http://${URL}:8000/api/exercise/getAll/`);
+              console.log('The response is', response);
+      
+              const data = await response.json();
 
-                const data = await response.json();
-                console.log('The response data is', data);
-                // Update state with fetched data
-                setExerciseData(data); 
-                setFilteredExercises(data);
-
-                // Extract unique categories
-                const uniqueCategories = [...new Set(data.map(item => item.category))];
-                setCategories(uniqueCategories);
-
+              const sortedData = data.sort((a, b) => b.Eid - a.Eid);
+              setExerciseData(sortedData);
+              setFilteredExercises(sortedData);
+      
+              const uniqueCategories = [...new Set(data.map(item => item.category))];
+              setCategories(uniqueCategories);
             } catch (error) {
-                console.error('Error fetching exercise data:', error);
+              console.error('Error fetching exercise data:', error);
             }
-        };
-
-        // Call the function to fetch exercise data
-        fetchExerciseData();
-    }, []); 
+          };
+      
+          fetchExerciseData();
+        }, [])
+      );
 
     const filterExercises = (category) => {
         setSelectedCategory(category);
@@ -92,36 +77,36 @@ const exerciseManager = () => {
             </TouchableOpacity>
 
             <FlatList
-                data={filteredExercises}
-                contentContainerStyle={{ paddingHorizontal: 10 }}
-                renderItem={({ item }) => <ExerciseItem item={item} />}
-                keyExtractor={item => item.id}
-                ListHeaderComponent={() => (
-                    <>
-                    <View style={styles.sectionTitle}>
-                        <Text style={styles.sectionTitleText}>כל התרגילים</Text>
-                    </View>
-                    <FlatList
-                        horizontal
-                        data={['All', ...categories]}
-                        renderItem={({ item }) => (
-                        <TouchableOpacity
-                            style={[
-                            styles.categoryButton,
-                            selectedCategory === item && styles.selectedCategory
-                            ]}
-                            onPress={() => filterExercises(item === 'All' ? null : item)}
-                        >
-                            <Text style={styles.categoryButtonText}>{item}</Text>
-                        </TouchableOpacity>
-                        )}
-                        keyExtractor={(item) => item}
-                        showsHorizontalScrollIndicator={false}
-                        style={styles.categoryList}
-                    />
-                    </>
-                )}
+            data={filteredExercises}
+            contentContainerStyle={{ paddingHorizontal: 10 }}
+            renderItem={({ item }) => <ExerciseItem item={item} />}
+            keyExtractor={item => item.Eid.toString()}
+            ListHeaderComponent={() => (
+                <>
+                <View style={styles.sectionTitle}>
+                    <Text style={styles.sectionTitleText}>כל התרגילים</Text>
+                </View>
+                <FlatList
+                    horizontal
+                    data={['All', ...categories]}
+                    renderItem={({ item }) => (
+                    <TouchableOpacity
+                        style={[
+                        styles.categoryButton,
+                        selectedCategory === item && styles.selectedCategory
+                        ]}
+                        onPress={() => filterExercises(item === 'All' ? null : item)}
+                    >
+                        <Text style={styles.categoryButtonText}>{item}</Text>
+                    </TouchableOpacity>
+                    )}
+                    keyExtractor={(item) => item}
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.categoryList}
                 />
+                </>
+            )}
+            />
 
             
         </SafeAreaView>
