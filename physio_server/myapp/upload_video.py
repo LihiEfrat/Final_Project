@@ -1,33 +1,34 @@
 # Load and use the stored credentials for uploading video. 
 # need in the same directory: credentials.json
 
-
-import os
-import json
-import google.oauth2.credentials
-
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
+import googleapiclient.discovery
+import googleapiclient.errors
 import googleapiclient.discovery
 import googleapiclient.errors
 import traceback
 
-# Define constants
-CREDENTIALS_FILE = r"C:\Users\lihi7\project2\Final_Project\physio_server\myapp\credentials.json"
-CLIENT_SECRETS_FILE = "client_secret.json"
+TOKEN_FILE = './myapp/credentials.json'
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 API_SERVICE_NAME = "youtube"
 API_VERSION = "v3"
 
 def load_credentials():
-    with open(CREDENTIALS_FILE, "r") as f:
-        credentials_data = json.load(f)
-    return google.oauth2.credentials.Credentials(
-        credentials_data["token"],
-        refresh_token=credentials_data["refresh_token"],
-        token_uri=credentials_data["token_uri"],
-        client_id=credentials_data["client_id"],
-        client_secret=credentials_data["client_secret"],
-        scopes=credentials_data["scopes"]
-    )
+    creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            # Handle initial authorization (requires human interaction)
+            # This part should be done manually once to get the initial token
+            raise Exception("Initial authorization required")
+
+        # Save the refreshed credentials
+        with open(TOKEN_FILE, 'w') as token:
+            token.write(creds.to_json())
+
+    return creds
 
 def get_authenticated_service():
     credentials = load_credentials()
@@ -74,5 +75,4 @@ def upload_video_to_youtube(file, title, description, category="22", tags=[]):
     except Exception as e:
         traceback.print_exc()
         return {"success": False, "error": str(e)}
-
-
+    

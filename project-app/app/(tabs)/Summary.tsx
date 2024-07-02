@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import AppHeader from './components/AppHeader';
 import axios from 'axios';
 import YouTubePlayer from './YouTubePlayer';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const URL = process.env.EXPO_PUBLIC_API_URL;
@@ -12,7 +14,7 @@ interface Exercise {
   name: string;
   value: number;
   videoUrl: string;
-  description:string
+  description: string
 }
 
 interface SummaryData {
@@ -27,7 +29,8 @@ const Summary = () => {
   const [error, setError] = useState<string | null>(null);
 
   const route = useRoute();
-  const { patientId } = route.params;
+  const navigation = useNavigation();
+  const { patientId, userEmail } = route.params;
 
   useEffect(() => {
     const fetchSummaryData = async () => {
@@ -63,13 +66,17 @@ const Summary = () => {
   }
 
   return (
-    <View style={styles.container}>
-      
-      <AppHeader />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Image source={require('./logo.jpg')} style={styles.logo} />
+        <TouchableOpacity onPress={() => navigation.navigate('buildExercise')} style={styles.arrow}>
+          <Icon name='arrow-back' size={36} color="#1E98D7" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.righttl}>
-      <Text style={styles.title}>סיכום תרגול</Text>
-      <Text style={styles.programName}>מטופל: {summaryData.patient_id}</Text>
-      <Text style={styles.programName}>שם תוכנית: {summaryData.training_name}</Text>
+        <Text style={styles.title}>סיכום תרגול</Text>
+        <Text style={styles.programName}>מטופל: {userEmail}</Text>
+        <Text style={styles.programName}>שם תוכנית: {summaryData.training_name}</Text>
       </View>
       <FlatList
         data={summaryData.exercises}
@@ -81,12 +88,12 @@ const Summary = () => {
             <Text style={styles.exerciseValue}>פירוט: {item.description}</Text>
 
             <View style={styles.videoClip}>
-              <YouTubePlayer videoUrl={'https://www.youtube.com/watch?v=' +item.videoUrl} />
-                </View>  
+              <YouTubePlayer videoUrl={'https://www.youtube.com/watch?v=' + item.videoUrl} />
+            </View>
           </View>
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -94,7 +101,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor:'#ffff',
+    backgroundColor: '#ffff',
     direction: 'rtl',
 
   },
@@ -102,28 +109,29 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-
+    textAlign: 'center'
 
   },
   programName: {
     fontSize: 18,
     marginBottom: 10,
     direction: 'rtl',
+    textAlign: 'center'
 
   },
-  righttl:{
+  righttl: {
     direction: 'rtl',
 
   },
   exerciseContainer: {
-   
-        flex: 1,
-        margin: 5,
-        padding: 10,
-        backgroundColor: '#C2E4ED',
-        borderRadius: 10,
-        alignItems: 'center',
-     
+
+    flex: 1,
+    margin: 5,
+    padding: 10,
+    backgroundColor: '#C2E4ED',
+    borderRadius: 10,
+    alignItems: 'center',
+
   },
   exerciseName: {
     fontSize: 16,
@@ -144,8 +152,25 @@ const styles = StyleSheet.create({
   },
   videoClip: {
     width: '100%',
-    height: 200, 
+    height: 200,
     marginBottom: 10,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  logo: {
+    width: 200,
+    height: 100,
+    resizeMode: 'contain',
+  },
+  arrow: {
+    padding: 5,
+    color: '#1E98D7',
   },
 });
 

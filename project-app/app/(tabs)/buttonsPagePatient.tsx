@@ -25,7 +25,7 @@ const buttonsPagePatient = () => {
         const response = await axios.get(`http://${URL}:8000/api/patient/get-id/`, {
           params: { email: userEmail }
         });
-        setPatientId(response.data.id);  // Changed from response.data.patient_id to response.data.id
+        setPatientId(response.data.id);
       } catch (error) {
         console.error('Error fetching patient ID:', error);
         Alert.alert('Error', 'Failed to fetch patient information');
@@ -54,7 +54,7 @@ const buttonsPagePatient = () => {
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>דף בית מטופל</Text>
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('patientSummary', { patientId: patientId })}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('patientSummary', { patientId: patientId, userEmail })}>
         <Text style={styles.buttonText}>התוכנית שלי</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={openWhatsApp} style={styles.whatsappButton}>

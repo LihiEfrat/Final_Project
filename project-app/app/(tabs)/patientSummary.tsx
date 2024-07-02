@@ -1,12 +1,10 @@
-
-
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableOpacity,Image } from 'react-native';
+import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import AppHeader from './components/AppHeader';
 import axios from 'axios';
 import YouTubePlayer from './YouTubePlayer';
-import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -27,7 +25,7 @@ const PatientSummary = () => {
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const[pEmail,setEmail]=useState();
+  const [pEmail, setEmail] = useState();
 
   const route = useRoute();
   const navigation = useNavigation();
@@ -41,7 +39,7 @@ const PatientSummary = () => {
         console.log('Fetching from URL:', url);
         const response = await axios.get(url);
         console.log('Raw response data:', JSON.stringify(response.data, null, 2));
-        setEmail(userEmail) ;
+        setEmail(userEmail);
         console.log(pEmail);
         if (response.data.no_plan) {
           setError('אין לך תוכנית עדיין');
@@ -66,21 +64,21 @@ const PatientSummary = () => {
   }, [patientId, navigation]);
 
   if (loading) {
-    return <ActivityIndicator size="large" />;
+    return <ActivityIndicator size="large" style={styles.loadingIndicator} />;
   }
 
   if (error) {
     return (
-      <View style={styles.container}>
-         <View style={styles.container}>
-         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
-        <Ionicons name="arrow-back" size={35} color="black" />
-      </TouchableOpacity>
-        <Image source={require('./logo.jpg')} style={styles.logo}/>
-        <Text style={styles.error}>אין לך תוכנית עדיין</Text>
-        <Text style={styles.redirectText}>הנך מועבר לדף הבית, אנא תאם פגישה עם מטפל</Text>
-      </View>
-      </View>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => navigation.navigate('buttonsPagePatient', { userEmail: pEmail })} style={styles.arrow}>
+            <Icon name='arrow-back' size={36} color="#1E98D7" />
+          </TouchableOpacity>
+          <Image source={require('./logo.jpg')} style={styles.logo} />
+          <Text style={styles.error}>{error}</Text>
+          <Text style={styles.redirectText}>הנך מועבר לדף הבית, אנא תאם פגישה עם מטפל</Text>
+        </View>
+      </SafeAreaView>
     );
   }
 
@@ -88,83 +86,83 @@ const PatientSummary = () => {
     return <Text style={styles.error}>No exercise plan available for this patient.</Text>;
   }
 
-    return (
-        <View style={styles.container}>
-   
-          <AppHeader/>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
-        <Ionicons name="arrow-back" size={35} color="black" />
-      </TouchableOpacity>
-          <View style={styles.righttl}>
-          <Text style={styles.title}>התוכנית שלי</Text>
-          <Text style={styles.programName}>שם תוכנית: {summaryData.training_name}</Text>
-          <FlatList
-            data={summaryData.exercises}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.exerciseContainer}>
-                <Text style={styles.exerciseName}>{item.name}</Text>
-                <Text style={styles.exerciseValue}>מספר חזרות: {item.value}</Text>
-                <Text style={styles.exerciseValue}>פירוט: {item.description}</Text>
-    
-                <View style={styles.videoClip}>
-                  <YouTubePlayer videoUrl={'https://www.youtube.com/watch?v=' +item.videoUrl} />
-                    </View>  
-              </View>
-          
-    
-            )}
-          />
-        </View>
-        </View>
-      );
+  console.log('pEmail', pEmail);
+
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('buttonsPagePatient', { userEmail: pEmail })} style={styles.arrow}>
+          <Icon name='arrow-back' size={36} color="#1E98D7" />
+        </TouchableOpacity>
+        <Image source={require('./logo.jpg')} style={styles.logo} />
+      </View>
+      <Text style={styles.title}>התוכנית שלי</Text>
+      <Text style={styles.programName}>שם תוכנית: {summaryData.training_name}</Text>
+      <FlatList
+        data={summaryData.exercises}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.exerciseContainer}>
+            <Text style={styles.exerciseName}>{item.name}</Text>
+            <Text style={styles.exerciseValue}>מספר חזרות: {item.value}</Text>
+            <Text style={styles.exerciseValue}>פירוט: {item.description}</Text>
+            <View style={styles.videoClip}>
+              <YouTubePlayer videoUrl={'https://www.youtube.com/watch?v=' + item.videoUrl} />
+            </View>
+          </View>
+        )}
+      />
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    backgroundColor:'#ffff',
-    // direction: 'rtl',
-
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  loadingIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-
-
+    textAlign: 'center',
   },
   programName: {
     fontSize: 18,
     marginBottom: 10,
-    direction: 'rtl',
-
-  },
-  righttl:{
-    direction: 'rtl',
-
+    textAlign: 'center',
   },
   exerciseContainer: {
-   
-        flex: 1,
-        margin: 5,
-        padding: 10,
-        backgroundColor: '#C2E4ED',
-        borderRadius: 10,
-        alignItems: 'center',
-     
+    flex: 1,
+    marginVertical: 5,
+    padding: 10,
+    backgroundColor: '#C2E4ED',
+    borderRadius: 10,
+    alignItems: 'center',
+    width: Dimensions.get('window').width - 40,
+    paddingBottom: 0
   },
   exerciseName: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 5,
   },
   exerciseValue: {
     fontSize: 14,
+    marginBottom: 5,
   },
-  exerciseVideo: {
-    fontSize: 14,
-    color: 'blue',
+  videoClip: {
+    width: '100%',
+    height: 200,
+    marginBottom: 10,
   },
   error: {
     color: 'red',
@@ -172,27 +170,28 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
-  videoClip: {
-    width: '100%',
-    height: 200, 
-    marginBottom: 10,
-  },
- redirectText: {
+  redirectText: {
     fontSize: 14,
     color: 'gray',
     textAlign: 'center',
     marginTop: 10,
   },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
   logo: {
-    width: 250, 
-    height: 100, 
-    marginBottom: 20, 
+    width: 200,
+    height: 100,
+    resizeMode: 'contain',
   },
   arrow: {
-    position: 'absolute',
-    top: 40, 
-    left: 20,
-    paddingTop: 30,   
+    padding: 5,
+    color: '#1E98D7',
   },
 });
 
