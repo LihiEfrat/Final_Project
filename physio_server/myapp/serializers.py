@@ -14,23 +14,19 @@ class TherapistRegistrationSerializer(serializers.ModelSerializer):
 
         license_id = validated_data.get('license_id')
 
-        # External API endpoint
+        # API - return 1 for exists lisence Id, and 0 for none exists 
         url = f"https://practitionersapi.health.gov.il/Practitioners/api/Practitioners/GetProfessionsLicenseCount?professionId=10&licenseNum={license_id}"
         
-        # Make the API call
         response = requests.get(url)
         
         if response.status_code == 200:
-            # Check the API response
             api_result = response.json()
             if api_result != 1:
-                # If the license is invalid, raise a ValidationError
+                # If the lisense is invalid, raise a ValidationError
                 raise ValidationError({"license_id": "The provided license ID is invalid."})
         else:
             # If the API call fails, raise a ValidationError
             raise ValidationError({"license_id": "There was an error validating the license ID. Please try again later."})
-
-
 
         # Hash the password before saving
         validated_data['password'] = make_password(validated_data['password'])

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import AppHeader from './components/AppHeader';
 import YouTubePlayer from './YouTubePlayer';
 
+/* 
 const exerciseData12 = [
     { id: '1', name: 'Exercise 1', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
     { id: '2', name: 'Exercise 2', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
@@ -12,6 +13,7 @@ const exerciseData12 = [
     { id: '5', name: 'Exercise 5', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
     { id: '6', name: 'Exercise 6', videoUrl: '9EhHFemc8WQ', description: '12 reps X 4 sets'  },
 ];
+*/ 
 
 const ExerciseItem = ({ item }) => {
     const url = 'https://www.youtube.com/watch?v=' + item.videoUrl;
@@ -34,7 +36,8 @@ const exerciseManager = () => {
     const URL = process.env.EXPO_PUBLIC_API_URL;
 
     const navigation = useNavigation();
-    const [exerciseData, setExerciseData] = useState([]); // Initialize state for exercise data
+    // Initialize state for exercise data
+    const [exerciseData, setExerciseData] = useState([]); 
 
     console.log(`http://${URL}:8000/api/exercise/getAll`);
 
@@ -47,12 +50,13 @@ const exerciseManager = () => {
         // Function to fetch exercise data from API
         const fetchExerciseData = async () => {
             try {
-                const response = await fetch(`http://${URL}:8000/api/exercise/getAll/`); // Replace with your API endpoint
+                const response = await fetch(`http://${URL}:8000/api/exercise/getAll/`); 
                 console.log('The response is', response);
 
                 const data = await response.json();
                 console.log('The response data is', data);
-                setExerciseData(data); // Update state with fetched data
+                // Update state with fetched data
+                setExerciseData(data); 
                 setFilteredExercises(data);
 
                 // Extract unique categories
@@ -66,7 +70,7 @@ const exerciseManager = () => {
 
         // Call the function to fetch exercise data
         fetchExerciseData();
-    }, []); // Empty dependency array ensures this runs only once on mount
+    }, []); 
 
     const filterExercises = (category) => {
         setSelectedCategory(category);
