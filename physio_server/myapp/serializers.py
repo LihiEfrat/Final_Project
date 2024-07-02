@@ -4,16 +4,14 @@ from rest_framework.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 
 from .models import Therapist, Patient, ProfessionalDetails, Preferences, Exercise, ExercisePlan, Training
-# here the request is sent from frondend to backend, fe - create new therapist
 class TherapistRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Therapist
         fields = ['first_name', 'last_name', 'user_id', 'license_id', 'email', 'phone_number', 'password', 'is_professional']
-        extra_kwargs = {'password': {'write_only': True}}  # Hide password field from response
+        extra_kwargs = {'password': {'write_only': True}}  
 
     def create(self, validated_data):
 
-        # Extract the license_id from the validated data
         license_id = validated_data.get('license_id')
 
         # External API endpoint
@@ -92,57 +90,16 @@ class PreferencesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Preferences
         fields = '__all__'
-
-# class ExercisePlanSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = ExercisePlan
-#         fields = ['exercise_id', 'value']
-
-# class TrainingSerializer(serializers.ModelSerializer):
-#     print('ib srkz')
-#     exercises_plans = ExercisePlanSerializer(many=True)
-#     patient_id = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), source='user')
-
-#     class Meta:
-#         model = Training
-#         fields = ['id', 'training_name', 'user_id', 'exercises_plans']
-
-#     def create(self, validated_data):
-#         print ('create')
-#         exercises_plans_data = validated_data.pop('exercises_plans')
-#         training = Training.objects.create(**validated_data)
-#         for exercise_plan_data in exercises_plans_data:
-#             ExercisePlan.objects.create(training=training, **exercise_plan_data)
-#         return training
-
-        
+    
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
         fields = '__all__'
 
-# # gpt option 
 class ExercisePlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExercisePlan
         fields = ['exercise_id', 'value']
-# ---------working from cloude w/o exercises
-# class TrainingSerializer(serializers.ModelSerializer):
-#     exercises_plan = ExercisePlanSerializer(many=True, read_only=True)
-#     patient_id = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), source='patient')
-
-#     class Meta:
-#         model = Training
-#         fields = ['id', 'training_name', 'patient_id', 'exercises_plan']
-
-#     def create(self, validated_data):
-#         exercises_plans_data = validated_data.pop('exercises_plans', [])  # Use 'exercises_plans' key
-#         training = Training.objects.create(**validated_data)
-#         for exercise_plan_data in exercises_plans_data:
-#             ExercisePlan.objects.create(training=training, **exercise_plan_data)
-#         return training
-
-# -----------new 
 class TrainingSerializer(serializers.ModelSerializer):
     exercises_plan = ExercisePlanSerializer(many=True)
     patient_id = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), source='patient')

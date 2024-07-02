@@ -114,7 +114,7 @@ class PreferencesViewSet(viewsets.ModelViewSet):
 
 class TrainingView(APIView):
     def post(self, request):
-        print('Request data:', request.data)  # Add this line to print the request.data
+        print('Request data:', request.data)  
         serializer = TrainingSerializer(data=request.data)
         if serializer.is_valid():
             training = serializer.save()

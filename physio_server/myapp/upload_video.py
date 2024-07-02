@@ -1,5 +1,5 @@
 # Load and use the stored credentials for uploading video. 
-# need in the same directory: credentials.json, video.mp4 
+# need in the same directory: credentials.json
 
 
 import os
@@ -67,13 +67,11 @@ def upload_video(youtube, file, title, description, category, tags):
 
 
 def upload_video_to_youtube(file, title, description, category="22", tags=[]):
-    # youtube = get_authenticated_service()
     try:
         youtube = get_authenticated_service()
         video_id = upload_video(youtube, file, title, description, category, tags)
         return {"success": True, "video_id": video_id}
     except Exception as e:
-        # print(f"An error occurred: {e}")
         traceback.print_exc()
         return {"success": False, "error": str(e)}
 
