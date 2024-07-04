@@ -1,3 +1,5 @@
+# Contains the logic for processing requests and returning responses 
+
 from django.shortcuts import render
 import json
 from rest_framework import status, viewsets

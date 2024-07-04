@@ -1,5 +1,3 @@
-// Screen2.js
-
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -8,6 +6,7 @@ import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native'
 
+// Map each category to a number, for the dropdown menu
 const data = [
     { label: 'כתף', value: '1' },
     { label: 'ברך', value: '2' },
@@ -28,16 +27,15 @@ const addExercise = () => {
         name: '',
         category: '',
         description: '',
-        file: null, // Add file to state
-        approval: false, 
-        
+        file: null, 
+        approval: false,        
     });
 
     const URL = process.env.EXPO_PUBLIC_API_URL;
 
     const [isLoading, setIsLoading] = useState(false); 
 
-    // the function will access the properties og the video file from exerciseData.file 
+    // The function will access the properties of the video file from exerciseData.file 
     // and include them in the FormData object when uploading the video to the Django server. 
     const handleSubmit = async () => {
         try {
@@ -45,8 +43,8 @@ const addExercise = () => {
                 console.error('Video file information missing');
                 return;
             }
-
-            setIsLoading(true); // Set loading state to true
+            // Set loading state to true
+            setIsLoading(true); 
 
             // Create form data for the video upload
             const formData = new FormData();
@@ -65,8 +63,8 @@ const addExercise = () => {
                     'Content-Type': 'multipart/form-data',
                 }
             });
-
-            setIsLoading(false); // Set loading state to false
+            // Set loading state to false
+            setIsLoading(false); 
             console.log(uploadResponse.data)
 
             // Handle the response from the backend
@@ -81,26 +79,30 @@ const addExercise = () => {
                     approval: false,
                 });
                 
-                navigation.navigate('exerciseManager'); // Navigate back to the previous screen
-                return; // for debug 
+                // Navigate back to the previous screen
+                navigation.navigate('exerciseManager'); 
+                return; 
             } else {
                 console.log('Upload failed'); 
                 Alert.alert('Error', uploadResponse.data.error || 'Failed to upload the video. Please try again.');
             }
 
         } catch (error) {
-            console.error('Error:', error.response ? error.response.data : error.message); // Handle error
-            setIsLoading(false); // Set loading state to false
+            // Handle error
+            console.error('Error:', error.response ? error.response.data : error.message); 
+            // Set loading state to false
+            setIsLoading(false); 
             console.log('Error occurred, showing alert'); 
             Alert.alert('Error', 'An error occurred while uploading the video. Please try again.');
         }
     };
 
+    // Function to handle changes in the form fields
     const handleChange = (field, value) => {
         console.log('handleChange called with:', field, value);
         
         if (field === 'file') {
-            // Handle the selected video file
+            // Handle the selected video file from the device 
             const videoFile = value.assets && value.assets.length > 0
             ? {
                 uri: value.assets[0].uri,
@@ -134,7 +136,8 @@ const addExercise = () => {
             });
         }
         };
-
+    
+    // Function to handle video file picking
     const handleFilePick = async () => {
     console.log('handleFilePick function called');
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -157,10 +160,11 @@ const addExercise = () => {
 
     return (
         <SafeAreaView style={styles.safeArea}> 
-        <TouchableOpacity onPress={() => navigation.navigate('exerciseManager')} style={styles.backButton}>
+        <TouchableOpacity onPress={() => navigation.navigate('exerciseManager')} style={styles.backButton}> 
             <AntDesign name="arrowleft" size={40} color="black" padding={20} />
         </TouchableOpacity>
         {isLoading ? (
+            // Starting loading file animation 
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="black" />
                 <Text style={styles.loadingText}>Uploading video...</Text>
@@ -193,7 +197,8 @@ const addExercise = () => {
                         onBlur={() => setIsFocus(false)}
                         onChange={(item) => {
                             setValue(item.value);
-                            handleChange('category', item.label); // Update category in exerciseData
+                            // Update category in exerciseData
+                            handleChange('category', item.label); 
                             setIsFocus(false);
                         }}
                     />
@@ -345,12 +350,14 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#d8f6fa',
     },
+
     loadingContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#d8f6fa',
         },
+
     loadingText: {
         marginTop: 10,
         fontSize: 16,

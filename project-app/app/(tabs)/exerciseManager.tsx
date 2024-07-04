@@ -24,7 +24,7 @@ const ExerciseItem = ({ item }) => {
 
 const exerciseManager = () => {
     const URL = process.env.EXPO_PUBLIC_API_URL;
-
+    // Navigation between screens
     const navigation = useNavigation();
     // Initialize state for exercise data
     const [exerciseData, setExerciseData] = useState([]); 
@@ -37,6 +37,7 @@ const exerciseManager = () => {
         useCallback(() => {
           const fetchExerciseData = async () => {
             try {
+              // Get exercises from the server
               const response = await fetch(`http://${URL}:8000/api/exercise/getAll/`);
               console.log('The response is', response);
       
@@ -51,8 +52,7 @@ const exerciseManager = () => {
             } catch (error) {
               console.error('Error fetching exercise data:', error);
             }
-          };
-      
+          };      
           fetchExerciseData();
         }, [])
       );
@@ -84,10 +84,11 @@ const exerciseManager = () => {
             ListHeaderComponent={() => (
                 <>
                 <View style={styles.sectionTitle}>
-                    <Text style={styles.sectionTitleText}>כל התרגילים</Text>
+                    <Text style={styles.sectionTitleText}>כל התרגילים</Text> 
                 </View>
                 <FlatList
                     horizontal
+                    // View all existing exercises, with the option to filter by category
                     data={['All', ...categories]}
                     renderItem={({ item }) => (
                     <TouchableOpacity
@@ -106,12 +107,8 @@ const exerciseManager = () => {
                 />
                 </>
             )}
-            />
-
-            
+            />         
         </SafeAreaView>
-
-
     );
 };
 
@@ -161,7 +158,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         marginBottom: 5,
     },
-
     categoryList: {
         maxHeight: 60,  
         marginVertical: 15,  

@@ -1,7 +1,8 @@
+# Maps URLs to their corresponding views, handling routing for the application. 
+
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import TherapistRegistrationView, PatientRegistrationView, CustomLoginView, TherapistViewSet, PatientViewSet, ProfessionalDetailsViewSet, PreferencesViewSet,TrainingViewSet,TrainingView,ExerciseViewSet,ExercisePlanView,ExercisePlanViewSet, upload_video_view,get_patient_summary,get_patient_id
-
 
 
 # urls to django APIs
@@ -28,8 +29,4 @@ urlpatterns = [
     path('training/getAll/', TrainingViewSet.as_view({'get': 'list'}), name='get-all-training'),
     path('patient-summary/<int:patient_id>/', get_patient_summary, name='patient-summary'),
     path('patient/get-id/', get_patient_id, name='get-patient-id'),
-
-
-
-
 ]
