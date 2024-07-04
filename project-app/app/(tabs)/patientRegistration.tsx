@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Button, Switch, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Button, Switch, ScrollView, Alert } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function RegisterToAppPatient() {
@@ -70,14 +69,7 @@ export default function RegisterToAppPatient() {
                 navigation.navigate('buttonsPagePatient', { userEmail: response.email });
             })
             .catch(error => {
-                console.error('There was an error making the request:', error);
-                console.error('Error message:', error.message);
-                if (error.response) {
-                    console.error('Server responded with status:', error.response.status);
-                    console.error('Response data:', error.response.data);
-                } else if (error.request) {
-                    console.error('No response received:', error.request);
-                }
+                Alert.alert('Error', 'One or more fields are incorrect, please correct and try again');
             });
     };
 
@@ -114,18 +106,22 @@ export default function RegisterToAppPatient() {
                     />
                     <TextInput
                         style={styles.input}
+                        keyboardType="numeric"
                         placeholder="תעודת זהות"
                         value={id}
                         onChangeText={setId}
                     />
                     <TextInput
                         style={styles.input}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
                         placeholder="Email"
                         value={email}
                         onChangeText={setEmail}
                     />
                     <TextInput
                         style={styles.input}
+                        keyboardType="numeric"
                         placeholder="מספר טלפון"
                         value={phoneNumber}
                         onChangeText={setPhoneNumber}
@@ -158,12 +154,14 @@ export default function RegisterToAppPatient() {
                     />
                     <TextInput
                         style={styles.input}
+                        keyboardType="numeric"
                         placeholder="גובה"
                         value={height}
                         onChangeText={setHeight}
                     />
                     <TextInput
                         style={styles.input}
+                        keyboardType="numeric"
                         placeholder="משקל"
                         value={weight}
                         onChangeText={setWeight}

@@ -41,21 +41,7 @@ export default function RegisterToAppTherapist() {
                 navigation.navigate('buttonsPageTherapist');
             })
             .catch(error => {
-    
-                
-                if (error.response) {
-                    const { data } = error.response;
-                    if (data.errors) {
-                        const errorMessages = Object.values(data.errors).flat().join('\n');
-                        Alert.alert('Registration Error', errorMessages);
-                    } else {
-                        Alert.alert('Registration Error', 'An unknown error occurred. Please try again.');
-                    }
-                } else if (error.request) {
-                    Alert.alert('Registration Error', 'No response received. Please check your network connection.');
-                } else {
-                    Alert.alert('Registration Error', `Error: ${error.message}`);
-                }
+                Alert.alert('Error', 'One or more fields are incorrect, please correct and try again');
             });
     };
 
@@ -79,6 +65,7 @@ export default function RegisterToAppTherapist() {
                     />
                     <TextInput
                         style={styles.input}
+                        keyboardType="numeric"
                         placeholder="תעודת זהות"
                         value={id}
                         onChangeText={setId}
@@ -91,12 +78,14 @@ export default function RegisterToAppTherapist() {
                     />
                     <TextInput
                         style={styles.input}
+                        keyboardType="email-address"
                         placeholder="Email"
                         value={email}
                         onChangeText={setEmail}
                     />
                     <TextInput
                         style={styles.input}
+                        keyboardType="numeric"
                         placeholder="מספר טלפון"
                         value={phoneNumber}
                         onChangeText={setPhoneNumber}
