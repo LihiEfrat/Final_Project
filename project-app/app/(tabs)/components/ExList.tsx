@@ -8,7 +8,7 @@ import axios from 'axios';
 
 
 
-const ExList = ({ setExerciseData, onSubmit }) => {
+const ExList = ({ setExerciseData }) => {
   const [allExercises, setAllExercises] = useState([]);
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [categories, setCategories] = useState([]);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, SafeAreaView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -8,9 +8,29 @@ const { width } = Dimensions.get('window');
 const buttonsPageTherapist = () => {
   const navigation = useNavigation();
 
+  // pop up for logout confirmation
+  const handleBackPress = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to log out?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel'
+        },
+        {
+          text: 'Yes',
+          onPress: () => navigation.goBack(),
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
+      <TouchableOpacity onPress={handleBackPress} style={styles.arrow}>
         <Ionicons name="arrow-back" size={35} color="#1E98D7" />
       </TouchableOpacity>
       <Image 

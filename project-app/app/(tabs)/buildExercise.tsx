@@ -11,6 +11,11 @@ const BuildEx = () => {
   const [programName, setProgramName] = useState('');
   const [patientEmail, setPatientEmail] = useState('');
   const [exerciseData, setExerciseData] = useState([]);
+  const [key, setKey] = useState(0);
+
+  const resetExList = () => {
+    setKey(prevKey => prevKey + 1);
+  };
 
   const URL = process.env.EXPO_PUBLIC_API_URL;
   const navigation = useNavigation();
@@ -44,9 +49,10 @@ const BuildEx = () => {
       
       Alert.alert('Success', 'Training plan saved successfully');
       //reset the form 
-      training_name: ('');
-      patient_id: ('');
-      exercises_plan: ([]);
+      setProgramName('');
+      setPatientEmail('');
+      setExerciseData([]);
+      resetExList();
       //navigate to summary page with patient id & email
       navigation.navigate('Summary', { patientId: patientId, userEmail: patientEmail });
     } catch (error) {
@@ -67,7 +73,7 @@ const BuildEx = () => {
         setPatientEmail={setPatientEmail}
       />
       {/* set exercise data as selected from exList */}
-      <ExList setExerciseData={setExerciseData} />
+      <ExList key={key} setExerciseData={setExerciseData} />
       <TouchableOpacity style={styles.button} onPress={handleTrainingSave}>
         <Text style={styles.buttonText}>שמור</Text>
       </TouchableOpacity>

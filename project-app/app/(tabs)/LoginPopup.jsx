@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import axios from 'axios'; // Import Axios for making HTTP requests
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,7 +14,6 @@ const LoginPopup = ({ onClose }) => {
   const URL = process.env.EXPO_PUBLIC_API_URL;
 
   const handleLogin = () => {
-    // Make a POST request to your login API endpoint
     axios.post(`http://${URL}:8000/api/login/`, {
       email: username,
       password: password
@@ -34,7 +33,7 @@ const LoginPopup = ({ onClose }) => {
       onClose(); 
     })
     .catch(error => {
-      console.error('Login error:', error);
+      Alert.alert('Error', 'Email or Password is incorrect, please try again');
     });
   };
 
@@ -44,6 +43,8 @@ const LoginPopup = ({ onClose }) => {
         <Text style={styles.title}>התחברות</Text>
         <TextInput
           style={styles.input}
+          keyboardType="email-address"
+          autoCapitalize="none"
           placeholder="כתובת אימייל"
           value={username}
           onChangeText={setUsername}

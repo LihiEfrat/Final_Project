@@ -4,8 +4,6 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, SafeAreaVi
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 
-
-
 const { width } = Dimensions.get('window');
 
 const buttonsPagePatient = () => {
@@ -42,9 +40,29 @@ const buttonsPagePatient = () => {
     Linking.openURL(url).catch((err) => Alert.alert('Error', 'Failed to open whatsapp: ' + err));
   };
 
+  // pop up for logout confirmation
+  const handleBackPress = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to log out?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel'
+        },
+        {
+          text: 'Yes',
+          onPress: () => navigation.goBack(),
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
+      <TouchableOpacity onPress={handleBackPress} style={styles.arrow}>
         <Ionicons name="arrow-back" size={35} color="black" />
       </TouchableOpacity>
       <Image 
