@@ -30,7 +30,7 @@ const PatientSummary = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const { patientId, userEmail } = route.params;
-
+//get summary from db
   useEffect(() => {
     const fetchSummaryData = async () => {
       try {
@@ -49,6 +49,7 @@ const PatientSummary = () => {
         } else {
           setSummaryData(response.data);
         }
+        //if patient dont have plan yet
       } catch (error) {
         console.error('Error fetching summary data:', error.response ? error.response.data : error.message);
         setError('לא קיימת תוכנית אימון אנא קבע פגישה חדשה');
@@ -66,7 +67,7 @@ const PatientSummary = () => {
   if (loading) {
     return <ActivityIndicator size="large" style={styles.loadingIndicator} />;
   }
-
+//window if patient dont have plan- returning to the home page after 5sec
   if (error) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -88,7 +89,7 @@ const PatientSummary = () => {
 
   console.log('pEmail', pEmail);
 
-
+//show patient summary
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -116,7 +117,7 @@ const PatientSummary = () => {
     </SafeAreaView>
   );
 };
-
+//design
 const styles = StyleSheet.create({
   container: {
     flex: 1,

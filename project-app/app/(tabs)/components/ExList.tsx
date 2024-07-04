@@ -21,7 +21,7 @@ const ExList = ({ setExerciseData, onSubmit }) => {
 
 
   const URL = process.env.EXPO_PUBLIC_API_URL;
-
+//icon pull
   const imageLibrary = [
     require('../pictures/1.png'),
     require('../pictures/2.png'),
@@ -33,23 +33,25 @@ const ExList = ({ setExerciseData, onSubmit }) => {
     require('../pictures/8.png'),
     require('../pictures/9.png'),
 
-    // Add more images as needed
+  
   ];
+  //random icons 
   const getRandomImage = () => {
     const randomIndex = Math.floor(Math.random() * imageLibrary.length);
     return imageLibrary[randomIndex];
   };
+  //get exercises from my_app exercise table
   useEffect(() => {
     const fetchExercises = async () => {
       try {
         const response = await axios.get(`http://${URL}:8000/api/exercise/getAll/`);
         setAllExercises(response.data);
         setFilteredExercises(response.data);
-        
+        //set categories
         const uniqueCategories = [...new Set(response.data.map(item => item.category))];
         setCategories(uniqueCategories);
   
-        // Create a mapping of exercise IDs to random images
+        // create a mapping of exercise IDs to random images
         const imageMap = {};
         response.data.forEach(exercise => {
           imageMap[exercise.Eid] = getRandomImage();
@@ -73,13 +75,14 @@ const ExList = ({ setExerciseData, onSubmit }) => {
     setExerciseData(exercisePlan);
   }, [exerciseValues, setExerciseData]);
 
+  //handle value change for each exercise
   const handleValueChange = (exerciseId, value) => {
     setExerciseValues(prev => ({
       ...prev,
       [exerciseId]: value
     }));
   };
-
+// filter exercises by category
   const filterExercises = (category) => {
     setSelectedCategory(category);
     if (category) {
@@ -88,31 +91,7 @@ const ExList = ({ setExerciseData, onSubmit }) => {
       setFilteredExercises(allExercises);
     }
   };
-
-  // const ExerciseItem = ({ item }) => {
-  //   const value = exerciseValues[item.Eid] || 0;
-
-  //   return (
-  //     <View style={styles.exerciseItem}>
-  //       <TouchableOpacity
-  //         style={styles.to}
-  //         onPress={() => {
-  //           setSelectedItem(item);
-  //           setModalOpen(true);
-  //         }}
-  //       >
-  //         {/* <Image source={ require('../exLogo.png')} style={styles.exerciseImage} /> */}
-  //         <Image source={getRandomImage()} style={styles.exerciseImage} />
-  //         <Text style={styles.exerciseName}>{item.name}</Text>
-  //       </TouchableOpacity>
-  //       <View style={styles.buttons}>
-  //         <Button onPress={() => handleValueChange(item.Eid, Math.max(0, value - 1))} title="-" />
-  //         <Text style={styles.count}>{value}</Text>
-  //         <Button onPress={() => handleValueChange(item.Eid, value + 1)} title="+" />
-  //       </View>
-  //     </View>
-  //   );
-  // };
+//create exercise item 
   const ExerciseItem = ({ item }) => {
     const value = exerciseValues[item.Eid] || 0;
   
@@ -136,7 +115,7 @@ const ExList = ({ setExerciseData, onSubmit }) => {
       </View>
     );
   };
-
+//summary of chosen exercise in specific point
   const renderSummary = () => {
     const selectedExercises = allExercises.filter(ex => exerciseValues[ex.Eid] > 0);
     return (
@@ -171,6 +150,7 @@ const ExList = ({ setExerciseData, onSubmit }) => {
         showsHorizontalScrollIndicator={false}
         style={styles.categoryList}
       />
+      {/* list of exercises */}
       <FlatList
         data={filteredExercises}
         renderItem={({ item }) => <ExerciseItem item={item} />}
@@ -189,6 +169,7 @@ const ExList = ({ setExerciseData, onSubmit }) => {
         onRequestClose={() => setModalOpen(false)}
       >
         <View style={styles.modalBackground}>
+         {/* descripiton+video for each exercise */}
           <View style={styles.modalContainer}>
             {selectedItem && (
               <>
@@ -222,7 +203,7 @@ const ExList = ({ setExerciseData, onSubmit }) => {
     </View>
   );
 };
-
+//design
 const styles = StyleSheet.create({
   container: {
     flex: 1,

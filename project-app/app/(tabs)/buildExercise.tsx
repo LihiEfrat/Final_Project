@@ -14,7 +14,7 @@ const BuildEx = () => {
 
   const URL = process.env.EXPO_PUBLIC_API_URL;
   const navigation = useNavigation();
-
+  //check if plan_name & patient email was entered
   const handleTrainingSave = async () => {
     if (!programName || !exerciseData.length || !patientEmail) {
       Alert.alert('Error', 'Please enter a program name, patient email, and select at least one exercise');
@@ -27,12 +27,12 @@ const BuildEx = () => {
         params: { email: patientEmail }
       });
       const patientId = patientResponse.data.id;
-
+      //check if the patient exist
       if (!patientId) {
         Alert.alert('Error', 'Invalid patient email. Please check and try again.');
         return;
       }
-
+      //insert data 
       const trainingData = {
         training_name: programName,
         patient_id: patientId,
@@ -43,6 +43,11 @@ const BuildEx = () => {
       const saveResponse = await axios.post(`http://${URL}:8000/api/register/training/`, trainingData);
       
       Alert.alert('Success', 'Training plan saved successfully');
+      //reset the form 
+      training_name: ('');
+      patient_id: ('');
+      exercises_plan: ([]);
+      //navigate to summary page with patient id & email
       navigation.navigate('Summary', { patientId: patientId, userEmail: patientEmail });
     } catch (error) {
       console.error('Error:', error);
@@ -54,12 +59,14 @@ const BuildEx = () => {
     <View style={styles.container}>
       <AppHeader />
       <AHeader />
+      {/* set progrem & patient e as given by therapist */}
       <Name 
         programName={programName} 
         setProgramName={setProgramName}
         patientEmail={patientEmail}
         setPatientEmail={setPatientEmail}
       />
+      {/* set exercise data as selected from exList */}
       <ExList setExerciseData={setExerciseData} />
       <TouchableOpacity style={styles.button} onPress={handleTrainingSave}>
         <Text style={styles.buttonText}>שמור</Text>
@@ -67,7 +74,7 @@ const BuildEx = () => {
     </View>
   );
 };
-
+// page design
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import AppHeader from './components/AppHeader';
 import axios from 'axios';
 import YouTubePlayer from './YouTubePlayer';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -22,7 +21,7 @@ interface SummaryData {
   training_name: string;
   exercises: Exercise[];
 }
-
+//collecting params 
 const Summary = () => {
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -31,7 +30,7 @@ const Summary = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const { patientId, userEmail } = route.params;
-
+//fatch information from db
   useEffect(() => {
     const fetchSummaryData = async () => {
       try {
@@ -60,24 +59,27 @@ const Summary = () => {
   if (error) {
     return <Text style={styles.error}>{error}</Text>;
   }
-
+//if patient dont have plan yet
   if (!summaryData) {
     return <Text style={styles.error}>No exercise plan available for this patient.</Text>;
   }
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* header */}
       <View style={styles.headerContainer}>
         <Image source={require('./logo.jpg')} style={styles.logo} />
         <TouchableOpacity onPress={() => navigation.navigate('buildExercise')} style={styles.arrow}>
           <Icon name='arrow-back' size={36} color="#1E98D7" />
         </TouchableOpacity>
       </View>
+      {/* summary of built plan */}
       <View style={styles.righttl}>
         <Text style={styles.title}>סיכום תרגול</Text>
         <Text style={styles.programName}>מטופל: {userEmail}</Text>
         <Text style={styles.programName}>שם תוכנית: {summaryData.training_name}</Text>
       </View>
+      {/* exercise list */}
       <FlatList
         data={summaryData.exercises}
         keyExtractor={(item, index) => index.toString()}
@@ -96,7 +98,7 @@ const Summary = () => {
     </SafeAreaView>
   );
 };
-
+//design
 const styles = StyleSheet.create({
   container: {
     flex: 1,
