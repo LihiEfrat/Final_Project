@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 import AppHeader from './components/AppHeader';
 import AHeader from './components/AHeader';
 import Name from './components/Name';
 import ExList from './components/ExList';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const BuildEx = () => {
   const [programName, setProgramName] = useState('');
   const [patientEmail, setPatientEmail] = useState('');
   const [exerciseData, setExerciseData] = useState([]);
   const [key, setKey] = useState(0);
-
+  
   const resetExList = () => {
     setKey(prevKey => prevKey + 1);
   };
+
+  // Reset the state when the screen is focused
+  useFocusEffect(
+      useCallback(() => {
+            setProgramName('');
+            setPatientEmail('');
+            setExerciseData([]);
+            resetExList();
+      }, [])
+  );
 
   const URL = process.env.EXPO_PUBLIC_API_URL;
   const navigation = useNavigation();
@@ -48,11 +58,7 @@ const BuildEx = () => {
       const saveResponse = await axios.post(`http://${URL}:8000/api/register/training/`, trainingData);
       
       Alert.alert('Success', 'Training plan saved successfully');
-      //reset the form 
-      setProgramName('');
-      setPatientEmail('');
-      setExerciseData([]);
-      resetExList();
+
       //navigate to summary page with patient id & email
       navigation.navigate('Summary', { patientId: patientId, userEmail: patientEmail });
     } catch (error) {
