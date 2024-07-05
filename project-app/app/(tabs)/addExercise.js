@@ -55,7 +55,7 @@ const addExercise = () => {
     const handleSubmit = async () => {
         try {
             if (!exerciseData.file || !exerciseData.file.uri) {
-                console.error('Video file information missing');
+                Alert.alert('Error', 'Video file information missing');
                 return;
             }
             // Set loading state to true

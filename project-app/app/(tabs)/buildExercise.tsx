@@ -58,11 +58,7 @@ const BuildEx = () => {
       const saveResponse = await axios.post(`http://${URL}:8000/api/register/training/`, trainingData);
       
       Alert.alert('Success', 'Training plan saved successfully');
-      //reset the form 
-      setProgramName('');
-      setPatientEmail('');
-      setExerciseData([]);
-      resetExList();
+
       //navigate to summary page with patient id & email
       navigation.navigate('Summary', { patientId: patientId, userEmail: patientEmail });
     } catch (error) {

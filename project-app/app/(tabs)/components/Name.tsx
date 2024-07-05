@@ -21,6 +21,7 @@ const Name = ({ programName, setProgramName, patientEmail, setPatientEmail }) =>
         <Text style={styles.title}>זיהוי מטופל</Text>
         <TextInput
           style={styles.input}
+          keyboardType="email-address"
           value={patientEmail}
           onChangeText={setPatientEmail}
           placeholder="הזן מייל מטופל"
