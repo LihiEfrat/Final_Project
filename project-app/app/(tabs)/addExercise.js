@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 
 // Map each category to a number, for the dropdown menu
 const data = [
@@ -34,6 +34,21 @@ const addExercise = () => {
     const URL = process.env.EXPO_PUBLIC_API_URL;
 
     const [isLoading, setIsLoading] = useState(false); 
+
+    useFocusEffect(
+        useCallback(() => {
+            // Reset the state when the screen is focused
+            setExerciseData({
+                name: '',
+                category: '',
+                description: '',
+                file: null,
+                approval: false,
+            });
+            setValue(null);
+            setIsFocus(false);
+        }, [])
+    );
 
     // The function will access the properties of the video file from exerciseData.file 
     // and include them in the FormData object when uploading the video to the Django server. 
